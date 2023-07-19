@@ -8,13 +8,6 @@ lib-cov
 *.gz
 *.swp
 *.zip
-pids
-logs
-results
-tmp
-dist/*
-# Build
-public/css/main.css
 
 # Coverage reports
 coverage
@@ -26,28 +19,5 @@ coverage
 node_modules
 bower_components
 
-# Editors
-.idea
-*.iml
+generated/*
 
-# OS metadata
-.DS_Store
-Thumbs.db
-
-# Ignore built ts files
-dist/**/*
-
-src/generated
-tf/generated
-tf/.terraform
-.terraform
-sam-app/.terraform
-
-output/*
-downloads/*
-
-rasa/.rasa/*
-
-*.tar.gz
-
-private/*

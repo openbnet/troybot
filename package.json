@@ -7,18 +7,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest --watch ",
-    "build": "tsc",
-    "ngrok": "ngrok http 3000",
-    "restoreDialogflow": "ts-node src/common/convertDialogflow.ts && bash ./restore-assistant-local.sh",
-    "actionServer": "ts-node src/webBackend.ts",
-    "historyServer": "ts-node src/socketHistoryServer.ts",
-    "signalServer": "ts-node src/signalServer.ts",
-    "nats": "ts-node src/nats.ts",
-    "parseWhatsApp": "ts-node src/common/parseWhatsApp.ts",
-    "requirements": "cd rasa && /Users/hanselke/miniforge3/envs/rasatest/bin/pip freeze > requirements.txt",
-    "cpToClient": "cp src/Customer.ts webapp/src && cp src/common/types.ts webapp/src/common/types.ts && cp src/common/rasa.ts webapp/src/common/rasa.ts && cp src/Customer.ts supportapp/src && cp src/common/types.ts supportapp/src/common/types.ts && cp src/common/rasa.ts supportapp/src/common/rasa.ts",
-    "zipBot": "npm run cpToClient && rm -rf foodBot.zip && zip -r foodBot.zip . -x 'webapp/node_modules/*' 'node_modules/*' '*.zip' '*/.terraform' 'tf-*/*' 'depre/*' 'dist/*' '.git/*' 'private/*' 'rasa/.rasa/*' '*/node_modules/*' 'notebooks/*'",
-    "dockerClean": "docker container stop $(docker container ls -aq) && docker container rm $(docker container ls -aq) && docker volume rm $(docker volume ls -q) && docker-compose -f docker-compose-dev.yml down -v --remove-orphans"
+    "Rasa:Generate": "ts-node services/rasaConfigGenerator/generateRasa.ts"
   },
   "dependencies": {
     "@ethersproject/keccak256": "^5.7.0",

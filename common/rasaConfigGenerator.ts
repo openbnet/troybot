@@ -67,7 +67,7 @@ function intentsToNluYaml(intents: Intent[], customer: CustomerSettings): string
         }
         const nluItem = {
           intent: intent.id,
-          examples: buildIntentUtterances(Customer,intent).map((e) => `- ${e}`).join('\n')
+          examples: buildIntentUtterances(customer,intent).map((e) => `- ${e}`).join('\n')
         };
         
 
@@ -143,7 +143,7 @@ function getAskModifiers(toRandom: boolean): [string | null, string | null] {
   return [askRes,polite]
 }
 
-function writeIntentEntityAsks(intents: Intent[], customer: CustomerSettings) {
+function writeIntentEntityAsks(writePath: string , intents: Intent[], customer: CustomerSettings) {
   const nluObject = { nlu: [] } as any;
   const rulesObj = { rules: [] } as any;
   const standardObj = getStandardObjects(customer)
@@ -397,7 +397,7 @@ function writeIntentEntityAsks(intents: Intent[], customer: CustomerSettings) {
           nluObject.nlu.push(nluItem)
       }
   }
-  fs.writeFileSync(`./rasa/data/askRes.yml`,
+  fs.writeFileSync(`${writePath}/data/askRes.yml`,
     YAML.dump(nluObject,
       {
           lineWidth: -1,
@@ -405,7 +405,7 @@ function writeIntentEntityAsks(intents: Intent[], customer: CustomerSettings) {
         },
       ).replace(/examples:/g,"examples: |").replace(/'/g,"")
   )
-  fs.appendFileSync(`./rasa/data/askRes.yml`,
+  fs.appendFileSync(`${writePath}/data/askRes.yml`,
   YAML.dump(rulesObj,
     {
         lineWidth: -1,
@@ -499,7 +499,7 @@ function intentsToNluDomain(settings: CustomerSettings, intents: Intent[]): stri
 
           // handle slots
 
-          const [entityFill] = Customer.EntityFills.filter((ef) => {
+          const [entityFill] = settings.EntityFills.filter((ef) => {
             return ef.name === key
           })
           if (!entityFill) {
@@ -1392,11 +1392,15 @@ function filterIntents(intents: Intent[], id: string): Intent[] {
     return i.id === id
   })
 }
-function generateRasaConfig(customer: CustomerSettings) {
+export function generateRasaConfig(rasaRoot:string, customer: CustomerSettings) {
   // const allRules = getRules(customer, customer.Intents)
+  fs.mkdirSync(`${rasaRoot}/data/`, { recursive: true })
   for (const intent of customer.Intents) {
     const filteredIntents = filterIntents(customer.Intents, intent.id)
-    fs.writeFileSync(`./rasa/data/${intent.id}.yml`,intentsToNluYaml(filteredIntents, Customer))
+    // throw new Error(`writing to ${rasaRoot}/data/${intent.id}.yml`)
+    console.log(`writing to ${rasaRoot}/data/${intent.id}.yml`)
+    
+    fs.writeFileSync(`${rasaRoot}/data/${intent.id}.yml`,intentsToNluYaml(filteredIntents, customer))
     // const rulesObj = getRules(Customer,filteredIntents)
     // const contextSwitches = getContextSwitchingRules(filteredIntents,allRules.rules)
     // rulesObj.rules.push(...contextSwitches)
@@ -1408,6 +1412,6 @@ function generateRasaConfig(customer: CustomerSettings) {
   }
   
 
-  fs.writeFileSync("./rasa/domain.yml",intentsToNluDomain(Customer, Customer.Intents))
-  writeIntentEntityAsks(customer.Intents,customer)
+  fs.writeFileSync(`${rasaRoot}/domain.yml`,intentsToNluDomain(customer, customer.Intents))
+  writeIntentEntityAsks(rasaRoot, customer.Intents,customer)
 }

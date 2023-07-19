@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  rasa:
+    restart: always
+    container_name: rasa-container
+    image: rasa/rasa:3.5.6-full
+    ports:
+      - "5005:5005"
+    volumes:
+      - ./rasa:/app
+    command: run --enable-api --cors "*" --debug
