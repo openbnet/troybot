@@ -63,6 +63,7 @@ export type AboutUs = {
   text: string;
 };
 export type CustomerSettings = {
+  version: string;
   id: string;
   nlu: "es" | "rasa" | "rasaAction";
   orderChannel: Channel;

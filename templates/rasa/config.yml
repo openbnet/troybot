@@ -1,0 +1,69 @@
+# @format
+
+# The config recipe.
+# https://rasa.com/docs/rasa/model-configuration/
+recipe: default.v1
+assistant_id: troybot
+# Configuration for Rasa NLU.
+# https://rasa.com/docs/rasa/nlu/components/
+language: en
+
+pipeline:
+  # - name: components.autocorrect.Autocorrect
+  - name: WhitespaceTokenizer
+  # - name: components.fuzzywuzzy.FuzzyWuzzyClassifier
+  # threshold: 60
+  - name: LanguageModelFeaturizer
+    model_name: gpt2
+    model_weights: "gpt2"
+  - name: LanguageModelFeaturizer
+    model_name: bert
+    model_weights: "rasa/LaBSE"
+  - name: RegexFeaturizer
+    case_sensitive: false
+    use_word_boundaries: true
+  - name: LexicalSyntacticFeaturizer
+    features:
+      - [low, title, upper, suffix2] # features for the word preceding the word being evaluated
+      - [EOS, title, suffix5] # features for the word being evaluated
+      - [prefix2] # features for the word following the word being evaluated
+  - name: CountVectorsFeaturizer
+    analyzer: word
+  - name: CountVectorsFeaturizer
+    analyzer: char_wb
+    min_ngram: 2
+    max_ngram: 8
+  - name: CRFEntityExtractor
+  - name: DIETClassifier
+    entity_recognition: True
+    learning_rate: 0.001
+    batch_size: [32, 64]
+    epochs: 40
+    constrain_similarities: True
+    use_masked_language_model: True
+    embedding_dimension: 100
+    transformers_layers: 30
+    batch_strategy: balanced
+    tensorboard_log_directory: "./tensorboard"
+    tensorboard_log_level: "epoch"
+
+  # - name: EntitySynonymMapper
+  # - name: FallbackClassifier
+  #   threshold: 0.6
+  #   ambiguity_threshold: 0.05
+
+# Configuration for Rasa Core.
+# https://rasa.com/docs/rasa/core/policies/
+policies:
+  # # No configuration for policies was provided. The following default policies were used to train your model.
+  # # If you'd like to customize them, uncomment and adjust the policies.
+  # # See https://rasa.com/docs/rasa/policies for more information.
+  - name: MemoizationPolicy
+  - name: RulePolicy
+  # - name: UnexpecTEDIntentPolicy
+  #   max_history: 5
+  #   epochs: 100
+  # - name: TEDPolicy
+  #   max_history: 5
+  #   epochs: 100
+  #   constrain_similarities: true

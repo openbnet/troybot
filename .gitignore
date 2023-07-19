@@ -21,3 +21,9 @@ bower_components
 
 generated/*
 
+templates/rasa/.rasa/*
+templates/rasa/data/*
+templates/rasa/models/*
+templates/rasa/tensorboard/*
+templates/rasa/tests/*
+templates/rasa/domain.yml
