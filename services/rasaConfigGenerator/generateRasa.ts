@@ -6,6 +6,7 @@ function main() {
     const rasaPath = basePath + "/rasa"
     console.log("basePath",basePath)
     generateRasaConfig(rasaPath, Customer)
+    shell.exec(`ls -lah ${rasaPath}`)
     shell.exec(`cp -R ./templates/rasa/ ${rasaPath}`)
     shell.exec(`docker run -v ${rasaPath}:/app -v ${basePath}/models:/app/models rasa/rasa:3.5.6-full train --fixed-model-name ${Customer.id}-${Customer.version}`)
     shell.exec(`ls -lah && ls lah ${basePath}/models`)
