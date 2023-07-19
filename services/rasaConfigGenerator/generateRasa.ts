@@ -5,6 +5,7 @@ function main() {
     const basePath =  process.cwd() + "/generated"
     const rasaPath = basePath + "/rasa"
     console.log("basePath",basePath)
+    console.log("rasaPath",rasaPath)
     generateRasaConfig(rasaPath, Customer)
     shell.exec(`ls -lah ${rasaPath}`)
     shell.exec(`cp -R ./templates/rasa/* ${rasaPath}`)
