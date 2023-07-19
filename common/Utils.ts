@@ -686,7 +686,7 @@ export function processIntent(settings: CustomerSettings,session: Session, inten
     NLUContexts = JSON.parse(JSON.stringify(session.Entities)) as RasaSlot
   }
   console.log("NLUContexts",NLUContexts)
-  let responsesToUse = []
+  let responsesToUse: Response[] = []
   if (intent.if) {
     const { booleanCondition } = intent.if;
     if (!booleanCondition?.true?.responses || !booleanCondition?.false?.responses) {
@@ -1320,7 +1320,7 @@ export function extractQueryItems(input: string): string[] | null {
 /// @dev base function to get extractQueryItems array from responses
 
 export function extractQueryItemsFromResponses(responses: Response[]) : string[] | null {
-  let ret = null;
+  let ret: string[] | null = null;
   for (const res of responses) {
     const resQuries = extractQueryItems(res.text)
     if (resQuries) {
@@ -1383,9 +1383,9 @@ export function getEntityMatches(queryItems: string[], intent: Intent): string[]
 }
 
 /// @dev getIntent wrapper for different nlu
-export async function getIntent(customer: CustomerSettings, query: string, session: Session): Promise<IQueryResult | RasaResponse | null> {
+export async function getIntent(customer: CustomerSettings, query: string, session: Session): Promise<RasaResponse | null> {
   if (customer.nlu === "es") {
-    return getESIntent(query,session)
+    throw new Error("es depreciated")
   } else if (customer.nlu === "rasa") {
     return  await rasaParseMessage(query,customer.Agent.rasaOptions)
   } else {
