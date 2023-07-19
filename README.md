@@ -114,16 +114,6 @@ policies: {
 
 }
 
-//why not use them in
-
-type Policies {
-type: !disclaimer | order.pickUpTime | order.cancel | order.modify | order.payment
-responseText: string;
-// dont do action, assume a 1:1 match to type, or just store a mapping somewhere suitable
-// actionConfig: // just dump the HTTPReq json object to the corresponding endpoint dumbly
-
-}
-
 backend needs to implement shopping cart system
 
 dialogflow session entities
