@@ -25,3 +25,13 @@ jobs:
 
       - name: Run Rasa:Generate
         run: npm run Rasa:Generate
+      - name: Configure Git
+        run: |
+          git config --global user.name "CI Bot"
+          git config --global user.email "youremail@example.com"
+
+      - name: Commit and push changes
+        run: |
+          git add .
+          git commit -m "Update generated model [skip ci]"
+          git push origin main
