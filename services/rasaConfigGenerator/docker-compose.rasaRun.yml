@@ -8,5 +8,6 @@ services:
     ports:
       - "5005:5005"
     volumes:
-      - ./rasa:/app
-    command: run --enable-api --cors "*" --debug
+      - ../../generated/rasa:/app
+    command: run --enable-api --cors "*" --debug -m /app/models/DonsChickenPies-0
+    #command: run --help

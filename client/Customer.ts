@@ -1,7 +1,7 @@
 import { CustomerSettings } from "../common/types";
 
 export const Customer: CustomerSettings = {
-  version: "0.1",
+  version: "0",
   id: "DonsChickenPies",
   nlu: "rasa",
   orderChannel: {
