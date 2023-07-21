@@ -13,11 +13,11 @@ This allows for easy distribution of service hosting, especially for the AI mode
 
 ## Current features - how you can use it today
 
-| Task | Status |
+| Task | Status | notes |
 | --- | --- |
-| Generate Dialogflow config | ✅ | depreciated*
-| Generate Rasa config | ✅ | npm run Rasa:Generate
-| Train Rasa NLU model | ✅ |  npm run Rasa:Generate
+| Generate Dialogflow config | ✅ | depreciated* |
+| Generate Rasa config | ✅ | npm run Rasa:Generate |
+| Train Rasa NLU model | ✅ |  npm run Rasa:Generate |
 | DevDeploy Rasa NLU model | ✅ | 
 | DevDeploy Nats | ✅ | 
 | DevDeploy Whisper STT | ✅ |
