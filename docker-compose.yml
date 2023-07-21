@@ -12,16 +12,17 @@ services:
     volumes:
       - ./services/nats/nats.conf:/nats/nats.conf
       - nats_data1:/data
-    # rasa:
-    #   restart: always
-    #   container_name: rasa-container
-    #   image: rasa/rasa:3.5.6-full
-    #   ports:
-    #     - "5005:5005"
-    #   volumes:
-    #     - ./generated/rasa:/app
-    #   command: run --enable-api --cors "*" --debug -m /app/models/DonsChickenPies-0
-    #   #command: run --help
+
+  rasa:
+    restart: always
+    container_name: rasa-container
+    image: rasa/rasa:3.5.6-full
+    ports:
+      - "5005:5005"
+    volumes:
+      - ./generated/rasa:/app
+    command: run --enable-api --cors "*" --debug -m /app/models/DonsChickenPies-0
+    #command: run --help
 
   action_server:
     restart: always
@@ -31,6 +32,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5055:5055"
+    volumes:
+      - ./client:/app/client
+      - ./src:/app/src
   webapp:
     restart: always
     container_name: webapp

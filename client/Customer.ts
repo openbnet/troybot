@@ -744,8 +744,8 @@ export const Customer: CustomerSettings = {
     mlMinimumConfidence: 0.3,
     fuzzyAutoAcceptConfidence: 0.8,
     rasaOptions: {
-      url: "http://0.0.0.0:5005",
-      // url: "http://rasa:5005",
+      // url: "http://0.0.0.0:5005",
+      url: "http://rasa:5005",
       token: "unused"
     },
     actionServer: {
