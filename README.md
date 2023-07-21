@@ -13,14 +13,14 @@ This allows for easy distribution of service hosting, especially for the AI mode
 
 ## Current features - how you can use it today
 
-| Task | Status | notes |
-| --- | --- |
-| Generate Dialogflow config | ✅ | depreciated* |
-| Generate Rasa config | ✅ | npm run Rasa:Generate |
-| Train Rasa NLU model | ✅ |  npm run Rasa:Generate |
-| DevDeploy Rasa NLU model | ✅ | |
-| DevDeploy Nats | ✅ | |
-| DevDeploy Whisper STT | ✅ | |
+| Task | Status | Notes |
+| --- | --- | --- | 
+| Generate Dialogflow config | ✅ | depreciated* | 
+| Generate Rasa config | ✅ | npm run Rasa:Generate | 
+| Train Rasa NLU model | ✅ |  npm run Rasa:Generate | 
+| DevDeploy Rasa NLU model | ✅ | | 
+| DevDeploy Nats | ✅ | | 
+| DevDeploy Whisper STT | ✅ | | 
 | DevDeploy Piper TTS | ✅ | |
 | DevDeploy ActionServer | ✅ | |
 | DevDeploy TestWebApp with VAD | ✅ | |
@@ -64,7 +64,7 @@ You should be able to go to http://localhost:3000
 ### Tested hardware
 
 | Service | Macbook Pro M1 16GB Ram | 16Core 64GB ram 4090 lambdastack |
-| Whisper-medium | runs on cpu > 15s per s of voice | milliseconds with cuda |
+| Whisper-medium | runs on cpu > 15s per s of voice. | milliseconds with cuda |
 | Rasa  | runs on cpu fine | runs on cpu fine |
 | Piper TTS | runs on cpu fine | runs on cpu fine |
 | Tortise TTS | x | 1s for 1s of voice on cuda |
