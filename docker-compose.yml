@@ -41,5 +41,25 @@ services:
       - "3000:3000"
     volumes:
       - ./services/webapp/:/app
+
+  stt:
+    environment:
+      - CUDA_LAUNCH_BLOCKING=1
+    build:
+      context: ./services/stt
+      dockerfile: Dockerfile
+    volumes:
+      - /data/voice:/data/voice
+      - /data/ai-voice-cloning:/data/ai-voice-cloning
+      - /home/eighty/.cache/huggingface:/root/.cache/huggingface
+      - /home/eighty/.ssh:/root/.ssh
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
 volumes:
   nats_data1:
