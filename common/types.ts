@@ -1,7 +1,8 @@
 import { google } from "@google-cloud/dialogflow/build/protos/protos";
 import { RasaOptions } from "./rasa";
 
-export type MenuItem = {
+
+export type SalesItem = {
   id: string;
   display_name: string;
   tts_name?: string;
@@ -9,18 +10,18 @@ export type MenuItem = {
   description: string;
   class: string;
   sizes: Size[];
-  options: MenuItemOptions[][];
-  ingredients: string[];
-  disclaimers: string[];
-  min_order_amount: number;
-  preparation_minutes: number;
+  options?: SalesItemOptions[][];
+  ingredients?: string[];
+  disclaimers?: string[];
+  min_order_amount?: number;
+  preparation_minutes?: number;
 };
 export type Size = {
   name: string;
   synonyms: string[];
   addPrice: number;
 };
-export type MenuItemOptions = {
+export type SalesItemOptions = {
   option_type: string;
   allowAdd: boolean;
   addPrice: number;
@@ -29,12 +30,8 @@ export type MenuItemOptions = {
   disclaimers: string[];
   preparation_minutes: number;
 };
-export type MenuItemOptionsOrderItem = {
-  id: string; // MenuItemOptions.id
-  isAdd: boolean;
-};
 
-export type MenuItemOrderItem = {
+export type SalesItemOrderItem = {
   OrderItem: string;
   Quantity: number;
   Size: string;
@@ -42,7 +39,7 @@ export type MenuItemOrderItem = {
 export type Order = {
   id: number;
   customer_id: number;
-  items: MenuItemOrderItem[];
+  items: SalesItemOrderItem[];
   pickuptime: Date;
 };
 
@@ -66,12 +63,11 @@ export type CustomerSettings = {
   version: string;
   id: string;
   nlu: "es" | "rasa" | "rasaAction";
+  defaultResponse: Response;
   orderChannel: Channel;
-  aboutUs: AboutUs;
-  hello: Response;
-  Store: StoreSettings;
-  Tables: TableSettings[];
-  Menu: MenuItem[];
+  Store?: StoreSettings;
+  Tables?: TableSettings[];
+  SalesItems: SalesItem[]
   Intents: Intent[];
   EntityFills: EntityFill[];
   Agent: {
@@ -397,15 +393,15 @@ export type RasaRequest = {
 
 export type RasaEvent = {
   event:
-    | "action"
-    | "session_started"
-    | "user"
-    | "slot"
-    | "action_execution_rejected"
-    | "active_loop"
-    | "followup"
-    | "rewind"
-    | "undo";
+  | "action"
+  | "session_started"
+  | "user"
+  | "slot"
+  | "action_execution_rejected"
+  | "active_loop"
+  | "followup"
+  | "rewind"
+  | "undo";
   timestamp?: number;
   name?: string | null;
   confidence?: number;
@@ -438,9 +434,9 @@ export type RasaRule = {
 export type EntitySynonymType =
   | string
   | {
-      value: string;
-      synonyms: string[];
-    };
+    value: string;
+    synonyms: string[];
+  };
 
 export type Transcript = {
   text: string;

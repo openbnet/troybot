@@ -23,7 +23,7 @@ export default function App() {
 
   onMount(async () => {
     const nc = await connect({
-      servers: ["ws://116.86.23.23:8088"],
+      servers: ["ws://127.0.0.1:8088"],
       user: "web",
       pass: "password"
     });

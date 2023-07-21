@@ -78,7 +78,7 @@ export async function processMsg(
 
   if (["rasa", "rasaAction"].includes(customer.nlu)) {
     txt = txt.toLowerCase();
-    customer.Menu = toLowerCaseObj(customer.Menu);
+    customer.SalesItems = toLowerCaseObj(customer.SalesItems);
   }
 
   // get NLUIntent
@@ -164,7 +164,7 @@ export async function processMsg(
           ) {
             throw new Error(
               "deny got unexpected requested slot " +
-                session.Entities.requested_slot
+              session.Entities.requested_slot
             );
           }
           const matchedEntityFill = customer.EntityFills.find(
@@ -175,7 +175,7 @@ export async function processMsg(
           if (!matchedEntityFill) {
             throw new Error(
               "cant get matchedEntityFill for " +
-                session.Entities.requested_slot.replace(bestIntent.id + "_", "")
+              session.Entities.requested_slot.replace(bestIntent.id + "_", "")
             );
           }
           const mappedIntentEnts: RasaSlot = {};

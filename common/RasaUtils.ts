@@ -2,6 +2,9 @@ import { Intent, RasaDetectedEntity } from "./types";
 
 export function mergeRepeatedEntities(entities: RasaDetectedEntity[]): RasaDetectedEntity[] {
   // Sort the entities by their start position
+  if (!entities) {
+    return []
+  }
   const sortedEntities = entities.sort((a, b) => a.start - b.start);
   const nonClashingEntities: RasaDetectedEntity[] = [];
 
@@ -36,26 +39,26 @@ export function mergeRepeatedEntities(entities: RasaDetectedEntity[]): RasaDetec
   return nonClashingEntities;
 }
 
-export function sortRasaEntities(entities: RasaDetectedEntity[],intent: Intent): RasaDetectedEntity[] {
-    const retEnts: RasaDetectedEntity[] = []
-    if (!intent.entities) {
-        return entities
+export function sortRasaEntities(entities: RasaDetectedEntity[], intent: Intent): RasaDetectedEntity[] {
+  const retEnts: RasaDetectedEntity[] = []
+  if (!intent.entities) {
+    return entities
+  }
+
+  for (const intEnt of intent.entities) {
+    const entKey = intEnt.split("@")[0]
+    /// expect only 1 return
+    const [matchedEnt] = entities.filter((ent) => {
+      if (ent.entity.startsWith(intent.id + "_")) {
+        return ent.group === entKey
+      }
+      return ent.entity === entKey
+    })
+    if (matchedEnt) {
+      retEnts.push(matchedEnt)
     }
 
-    for (const intEnt of intent.entities) {
-        const entKey = intEnt.split("@")[0]
-        /// expect only 1 return
-        const [matchedEnt] = entities.filter((ent) => {
-            if (ent.entity.startsWith(intent.id + "_")) {
-                return ent.group === entKey
-            }
-            return ent.entity === entKey
-        })
-        if (matchedEnt) {
-            retEnts.push(matchedEnt)
-        }
-
-    }
-    return retEnts;
+  }
+  return retEnts;
 
 }

@@ -21,7 +21,8 @@ services:
       - "5005:5005"
     volumes:
       - ./generated/rasa:/app
-    command: run --enable-api --cors "*" --debug -m /app/models/DonsChickenPies-0
+      - ./generated/models:/models
+    command: run --enable-api --cors "*" --debug -m /models/OpenBNetworks-0.tar.gz
     #command: run --help
 
   action_server:
@@ -35,6 +36,7 @@ services:
     volumes:
       - ./client:/app/client
       - ./src:/app/src
+      - ./common:/app/common
   webapp:
     restart: always
     container_name: webapp
