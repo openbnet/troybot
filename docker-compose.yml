@@ -55,8 +55,8 @@ services:
     volumes:
       - /data/voice:/data/voice
       - /data/ai-voice-cloning:/data/ai-voice-cloning
-      - /home/eighty/.cache/huggingface:/root/.cache/huggingface
-      - /home/eighty/.ssh:/root/.ssh
+      - ~/.cache:/root/.cache/
+      - ~/.ssh:/root/.ssh
 
     deploy:
       resources:
