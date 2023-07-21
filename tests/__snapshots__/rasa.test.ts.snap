@@ -1,0 +1,241 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rasa converter rasa endpoints Rasa model/parse and predict endpoints 1`] = `
+{
+  "entities": [],
+  "intent": {
+    "confidence": 0.9986453652381897,
+    "name": "hello",
+  },
+  "intent_ranking": [
+    {
+      "confidence": 0.9986453652381897,
+      "name": "hello",
+    },
+    {
+      "confidence": 0.0005346834077499807,
+      "name": "askRes_OrderItem",
+    },
+    {
+      "confidence": 0.00022274407092481852,
+      "name": "askRes_Size",
+    },
+    {
+      "confidence": 0.00018233543960377574,
+      "name": "endOrder",
+    },
+    {
+      "confidence": 0.00015898060519248247,
+      "name": "ResetSession",
+    },
+    {
+      "confidence": 0.00008822162635624409,
+      "name": "getMenuItemDetails",
+    },
+    {
+      "confidence": 0.00004721758159575984,
+      "name": "GetSkills",
+    },
+    {
+      "confidence": 0.000037660040106857195,
+      "name": "UndoLast",
+    },
+    {
+      "confidence": 0.000028324213417363353,
+      "name": "Affirm",
+    },
+    {
+      "confidence": 0.0000227890741371084,
+      "name": "getCorkage",
+    },
+  ],
+  "text": "Hello",
+  "text_tokens": [
+    [
+      0,
+      5,
+    ],
+  ],
+}
+`;
+
+exports[`rasa converter rasa endpoints rasa model/predict endpoint 1`] = `null`;
+
+exports[`rasa converter rasa setup getRasaDomainYaml 1`] = `
+"intents:
+  - AlchoholPolicy
+  - getCorkage
+  - askRes_OrderItem
+  - askRes_Size
+  - askRes_Quantity
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: false
+actions:
+  - action_intent_AlchoholPolicy
+  - action_intent_getCorkage
+  - action_leavingContext
+  - action_joiningContext
+  - action_default_fallback
+lookup_tables:
+  MenuItems:
+    - chicken pie
+    - black pepper chicken pie
+    - prawn & scallop laksa bee hoon
+    - custom chicken pie
+  MenuItemSizes:
+    personal:
+      - personnel
+    whole:
+      - hole
+    small: []
+    large: []
+    extra large: []
+  AlchoholTypes:
+    alchohol:
+      - hard liquor
+      - booze
+      - adult beverages
+    wine:
+      - red wine
+      - white wine
+    whiskey:
+      - whiskey
+      - hard liquor
+  SysNumber:
+    '1':
+      - one
+      - a
+      - single
+      - won
+    '2':
+      - two
+      - double
+      - too
+    '3':
+      - three
+      - triple
+      - tree
+      - free
+    '4':
+      - four
+      - for
+      - fore
+    '5':
+      - five
+      - fife
+    '6':
+      - six
+      - sicks
+    '7':
+      - seven
+    '8':
+      - eight
+      - ate
+  Polite:
+    please:
+      - pretty please
+    thanks:
+      - thank you
+      - thank you very much
+      - much appriciated
+slots:
+  topSuggest:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+  topSuggestSlotKey:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: custom
+  interruptedIntents:
+    type: list
+    influence_conversation: false
+    mappings:
+      - type: custom
+  interruptedIntent:
+    type: categorical
+    influence_conversation: true
+    values:
+      - getMenuItemDetails
+      - makeOrder
+    mappings:
+      - type: custom
+  requested_slot:
+    type: categorical
+    influence_conversation: true
+    values:
+      - getMenuItemDetails_OrderItem
+      - makeOrder_OrderItem
+      - makeOrder_Size
+      - makeOrder_Quantity
+    mappings:
+      - type: custom
+  activeIntent:
+    type: categorical
+    influence_conversation: true
+    values:
+      - getMenuItemDetails_OrderItem
+      - makeOrder_OrderItem
+      - makeOrder_Size
+      - makeOrder_Quantity
+    mappings:
+      - type: custom
+entities: []
+forms: {}
+responses:
+  utter_default:
+    - text: I'm sorry , i dont understand. can you repharse your request?
+"
+`;
+
+exports[`rasa converter rasa setup getRasaNluYaml 1`] = `
+"nlu:
+  - intent: AlchoholPolicy
+    examples: |
+      - Do you serve [alchohol](Alchohol)
+      - Do you serve [wine](Alchohol)
+      - Do you serve [whiskey](Alchohol)
+      - Do you serve [hard liquor](Alchohol)
+      - Do you serve [booze](Alchohol)
+      - Do you serve [adult beverages](Alchohol)
+      - Do you serve [red wine](Alchohol)
+      - Do you serve [white wine](Alchohol)
+      - Do you serve [whiskey](Alchohol)
+      - Do you serve [hard liquor](Alchohol)
+      - Is [alchohol](Alchohol) allowed?
+      - Is [wine](Alchohol) allowed?
+      - Is [whiskey](Alchohol) allowed?
+      - Is [hard liquor](Alchohol) allowed?
+      - Is [booze](Alchohol) allowed?
+      - Is [adult beverages](Alchohol) allowed?
+      - Is [red wine](Alchohol) allowed?
+      - Is [white wine](Alchohol) allowed?
+      - Is [whiskey](Alchohol) allowed?
+      - Is [hard liquor](Alchohol) allowed?
+  - intent: getCorkage
+    examples: |
+      - can i bring my own alchohol
+      - do you charge corkage
+      - can i bring my own wine?
+      - can i bring my own whiskey?
+      - how much is your corkage charge?
+"
+`;
+
+exports[`rasa converter rasa setup intentsToStories should return a valid Rasa stories YML string for valid intents 1`] = `
+"stories:
+  - story: greet with no entites defined
+    steps:
+      - intent: greet
+      - action: action_intent_greet
+      - action: action_listen
+  - story: goodbye with no entites defined
+    steps:
+      - intent: goodbye
+      - action: action_intent_goodbye
+      - action: action_listen
+"
+`;
