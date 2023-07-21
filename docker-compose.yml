@@ -31,7 +31,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5055:5055"
-
   webapp:
     restart: always
     container_name: webapp

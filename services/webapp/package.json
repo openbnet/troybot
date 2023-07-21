@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@ricky0123/vad": "^0.2.4",
+    "@ricky0123/vad-web": "^0.0.12",
     "howler": "^2.2.3",
     "nats.ws": "^1.16.0",
     "solid-js": "^1.7.6"
