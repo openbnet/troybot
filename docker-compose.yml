@@ -22,7 +22,9 @@ services:
     volumes:
       - ./generated/rasa:/app
       - ./generated/models:/models
-    command: run --enable-api --cors "*" --debug -m /models/OpenBNetworks-0.tar.gz
+    env_file:
+      - .env
+    command: run --enable-api --cors "*" --debug -m /models/${RASA_MODEL}
     #command: run --help
 
   action_server:
