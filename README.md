@@ -18,21 +18,21 @@ This allows for easy distribution of service hosting, especially for the AI mode
 | Generate Dialogflow config | ✅ | depreciated* |
 | Generate Rasa config | ✅ | npm run Rasa:Generate |
 | Train Rasa NLU model | ✅ |  npm run Rasa:Generate |
-| DevDeploy Rasa NLU model | ✅ | 
-| DevDeploy Nats | ✅ | 
-| DevDeploy Whisper STT | ✅ |
-| DevDeploy Piper TTS | ✅ |
-| DevDeploy ActionServer | ✅ |
-| DevDeploy TestWebApp with VAD | ✅ |
-| DevDeploy Tortise TTS | Prototyped |
-| Custom train Whisper STT | Protyped |
-| Custom train Tortise STT | Protyped |
-| Document Customer config options | Planned |
-| Custom train Piper TTS | Planned |
-| Use LLM to improve NLU config | Planned |
-| LLM fallback for when NLU sucks | Planned |
-| 1:Many Agent webapp to assist bot live | Planned |
-| Production deploy | Planned |
+| DevDeploy Rasa NLU model | ✅ | |
+| DevDeploy Nats | ✅ | |
+| DevDeploy Whisper STT | ✅ | |
+| DevDeploy Piper TTS | ✅ | |
+| DevDeploy ActionServer | ✅ | |
+| DevDeploy TestWebApp with VAD | ✅ | |
+| DevDeploy Tortise TTS | Prototyped | |
+| Custom train Whisper STT | Protyped | |
+| Custom train Tortise STT | Protyped | |
+| Document Customer config options | Planned | |
+| Custom train Piper TTS | Planned | |
+| Use LLM to improve NLU config | Planned | |
+| LLM fallback for when NLU sucks | Planned | |
+| 1:Many Agent webapp to assist bot live | Planned | |
+| Production deploy | Planned | |
 
 
 
