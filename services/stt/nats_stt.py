@@ -12,11 +12,10 @@ feature_extractor = WhisperFeatureExtractor.from_pretrained(MODEL, language="en"
 tokenizer.set_prefix_tokens(language="en", task="transcribe")
 processor = AutoProcessor.from_pretrained(MODEL, language="en", task="transcribe")
 model = WhisperForConditionalGeneration.from_pretrained(MODEL).to(device)
-loop = asyncio.get_running_loop()
 subject_main = "service"
 subject = "service.stt"
 
-chunk_length = 30.0
+chunk_length = 15.0
 
 def convert_json_to_float32array(data):
     # Convert the JSON data to a Float32Array
@@ -31,18 +30,20 @@ async def processSTT(msg):
     float32array = convert_json_to_float32array(data)
     
     inputs = processor(float32array, return_tensors="pt", sampling_rate=16000).input_features.to(device)
-    generated_ids = model.generate(inputs=inputs, language="", task="transcribe")
+    generated_ids = model.generate(inputs=inputs, language="english", task="transcribe")
     transcription = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
     print("transcription", transcription)
     await msg.respond(transcription.encode())
 
 async def sub():
     # Connect to NATS server
-    nc = await nats.connect(servers=["nats://192.168.0.210:4222"], user="whisper_stt", password="password")
+    nc = await nats.connect(servers=["nats://nats_local:4222"], user="whisper_stt", password="password")
     print("got nc")
     sub = await nc.subscribe("service.stt", "stt_group", cb=processSTT)
     print("got sub", sub)
 
-loop = asyncio.get_event_loop()
+
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
 loop.create_task(sub())
 loop.run_forever()
