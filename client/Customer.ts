@@ -750,7 +750,6 @@ export const Customer: CustomerSettings = {
     },
     actionServer: {
       url: "http://localhost:5055/actionServer",
-      // url: "https://foodbot.openb.net/actionServer",
       token: "unused"
     },
     logMongo: {
