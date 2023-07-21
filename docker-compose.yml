@@ -1,13 +1,36 @@
 version: '3.8'
 
 services:
-  rasa:
-    restart: always
-    container_name: rasa-container
-    image: rasa/rasa:3.5.6-full
+  nats_local:
+    image: nats:2.9.19
     ports:
-      - "5005:5005"
+      - "4222:4222"
+      - "8088:8088"
+      - "6222:6222"
+    command: "-js -c /nats/nats.conf --name nats_local -p 4222"
+    # command: "-js"
     volumes:
-      - ./generated/rasa:/app
-    command: run --enable-api --cors "*" --debug -m /app/models/DonsChickenPies-0
-    #command: run --help
+      - ./services/nats/nats.conf:/nats/nats.conf
+      - nats_data1:/data
+    # rasa:
+    #   restart: always
+    #   container_name: rasa-container
+    #   image: rasa/rasa:3.5.6-full
+    #   ports:
+    #     - "5005:5005"
+    #   volumes:
+    #     - ./generated/rasa:/app
+    #   command: run --enable-api --cors "*" --debug -m /app/models/DonsChickenPies-0
+    #   #command: run --help
+
+  action_server:
+    restart: always
+    container_name: actionServer
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5055:5055"
+
+volumes:
+  nats_data1:

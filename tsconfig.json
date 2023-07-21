@@ -12,9 +12,15 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*", "src/types/*"]
+      "*": [
+        "node_modules/*",
+        "src/*",
+        "common/*"
+      ]
     },
-    "typeRoots": ["./node_modules/@types", "./jsLibTypes"]
+    "typeRoots": [
+      "./node_modules/@types",
+    ]
   },
-  "include": ["src/rasaActionServer.ts"]
+  "include": []
 }
