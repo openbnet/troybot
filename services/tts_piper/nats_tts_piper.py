@@ -163,7 +163,8 @@ def audio_float_to_int16(
 
 
 # Create an instance of the Piper class
-piper = Piper(model_path="./en-us-libritts-high.onnx", config_path="./en-us-libritts-high.onnx.json")
+
+piper = Piper(model_path="./en_US-libritts-high.onnx", config_path="./en_US-libritts-high.onnx.json")
 
 async def piperCallback(msg):
     payload = msg.data.decode("utf-8")

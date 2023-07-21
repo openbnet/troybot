@@ -20,4 +20,8 @@ WORKDIR /app
 
 COPY . /app
 
+RUN wget https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/libritts/high/en_US-libritts-high.onnx
+RUN wget https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/libritts/high/en_US-libritts-high.onnx.json
+RUN ls -lah
+
 CMD ["python", "nats_tts_piper.py"]
