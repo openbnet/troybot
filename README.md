@@ -24,11 +24,9 @@ This allows for easy distribution of service hosting, especially for the AI mode
 | DevDeploy Piper TTS | ✅ |
 | DevDeploy ActionServer | ✅ |
 | DevDeploy TestWebApp with VAD | ✅ |
-
 | DevDeploy Tortise TTS | Prototyped |
 | Custom train Whisper STT | Protyped |
 | Custom train Tortise STT | Protyped |
-
 | Document Customer config options | Planned |
 | Custom train Piper TTS | Planned |
 | Use LLM to improve NLU config | Planned |
@@ -65,11 +63,11 @@ You should be able to go to http://localhost:3000
 
 ### Tested hardware
 
-| Service | Macbook Pro M1 16GB Ram | 16Core 64GB ram 4090 lambdastack
-| Whisper-medium | runs on cpu > 15s per s of voice. | milliseconds with cuda
-| Rasa  | runs on cpu fine | runs on cpu fine
-| Piper TTS | runs on cpu fine | runs on cpu fine
-| Tortise TTS | x | 1s for 1s of voice on cuda. 
+| Service | Macbook Pro M1 16GB Ram | 16Core 64GB ram 4090 lambdastack |
+| Whisper-medium | runs on cpu > 15s per s of voice | milliseconds with cuda |
+| Rasa  | runs on cpu fine | runs on cpu fine |
+| Piper TTS | runs on cpu fine | runs on cpu fine |
+| Tortise TTS | x | 1s for 1s of voice on cuda |
 
 
 
