@@ -25,8 +25,8 @@ This allows for easy distribution of service hosting, especially for the AI mode
 | DevDeploy ActionServer | ✅ | |
 | DevDeploy TestWebApp with VAD | ✅ | |
 | DevDeploy Tortise TTS | Prototyped | |
-| Custom train Whisper STT | Protyped | |
-| Custom train Tortise STT | Protyped | |
+| Custom train Whisper STT | Prototyped | |
+| Custom train Tortise STT | Prototyped | |
 | Document Customer config options | Planned | |
 | Custom train Piper TTS | Planned | |
 | Use LLM to improve NLU config | Planned | |
@@ -41,12 +41,12 @@ Tasks follow Planned > Prototyped > ✅
 
 
 
-## depreciated*
+### depreciated*
 Dialogflow's workflow config doesnt allow for easy looping to cover many common conversation loop use cases.
 It also only returns top matching intent, which limits the post processing that can be done.
 
 
-### Usage
+# Usage
 
 First, configure your client in ./client/Customer.ts
 
@@ -64,6 +64,7 @@ You should be able to go to http://localhost:3000
 ### Tested hardware
 
 | Service | Macbook Pro M1 16GB Ram | 16Core 64GB ram 4090 lambdastack |
+| --- | --- | --- |
 | Whisper-medium | runs on cpu > 15s per s of voice. | milliseconds with cuda |
 | Rasa  | runs on cpu fine | runs on cpu fine |
 | Piper TTS | runs on cpu fine | runs on cpu fine |
