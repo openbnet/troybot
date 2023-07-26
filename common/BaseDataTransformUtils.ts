@@ -92,8 +92,8 @@ export function getMainValueFromEntitySynonym(input: EntitySynonymType[], value:
 export function getStandardObjects(settings: CustomerSettings): { [key: string]: any[] } {
   if (settings.nlu === "es") {
     return {
-      MenuItems: buildMenuList(settings.SalesItems),
-      MenuItemSizes: buildMenuItemSizes(settings.SalesItems),
+      SalesItems: buildMenuList(settings.SalesItems),
+      SalesItemSizes: buildMenuItemSizes(settings.SalesItems),
       AlchoholTypes,
       SysNumber: SysNumber,
       Polite
@@ -102,8 +102,8 @@ export function getStandardObjects(settings: CustomerSettings): { [key: string]:
     }
   } else {
     return {
-      MenuItems: buildMenuListRasa(settings.SalesItems),
-      MenuItemSizes: buildMenuItemSizes(settings.SalesItems),
+      SalesItems: buildMenuListRasa(settings.SalesItems),
+      SalesItemSizes: buildMenuItemSizes(settings.SalesItems),
       AlchoholTypes: AlchoholTypes,
       SysNumber: SysNumber,
       Polite: Polite,
@@ -115,8 +115,8 @@ export function getStandardObjects(settings: CustomerSettings): { [key: string]:
 
 export function getRasaDomainLookup(settings: CustomerSettings): { [key: string]: any[] } {
   return {
-    MenuItems: buildMenuListRasa(settings.SalesItems),
-    MenuItemSizes: generateLookupTable(buildMenuItemSizes(settings.SalesItems)),
+    SalesItems: buildMenuListRasa(settings.SalesItems),
+    SalesItemSizes: generateLookupTable(buildMenuItemSizes(settings.SalesItems)),
     AlchoholTypes: generateLookupTable(AlchoholTypes),
     SysNumber: generateLookupTable(SysNumber),
     Polite: generateLookupTable(Polite),

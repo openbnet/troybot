@@ -7,7 +7,7 @@ import {
   JSONCodec
 } from "nats";
 import { Session, UserTrackerEvent } from "../common/types";
-import { Customer } from "../client/Customer";
+import { Customer } from "../client/F&B_Customer";
 import { getBestTranscript, toLowerCaseObj } from "../common/Utils";
 import {
   endUserSession,
