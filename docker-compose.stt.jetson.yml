@@ -2,8 +2,9 @@ version: '3.8'
 
 services:
   stt:
+    runtime: nvidia
     environment:
-      - CUDA_LAUNCH_BLOCKING=1
+      - NVIDIA_VISIBLE_DEVICES=all
     build:
       context: ./services/stt
       dockerfile: Dockerfile.jetson
@@ -12,8 +13,9 @@ services:
       - /data/ai-voice-cloning:/data/ai-voice-cloning
       - ~/.cache:/root/.cache/
       - ~/.ssh:/root/.ssh
-
     deploy:
+      # mode: replicated
+      # replicas: 4
       resources:
         reservations:
           devices:

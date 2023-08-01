@@ -87,3 +87,25 @@ Minimum time: 3648.6059570014477 milliseconds
 Maximum time: 14253.205761000514 milliseconds
 Median time: 5791.26738101244 milliseconds
 Average time: 8879.932207101583 milliseconds
+
+
+# m60 1 instance, 5 conccurrent
+
+
+Request 1 took 1873.4679419994354 milliseconds
+Request 2 took 3115.414765998721 milliseconds
+Request 3 took 4362.811765000224 milliseconds
+Request 4 took 5627.430390998721 milliseconds
+Request 5 took 6858.2777840048075 milliseconds
+Minimum time: 1873.4679419994354 milliseconds
+Maximum time: 6858.2777840048075 milliseconds
+Median time: 4362.811765000224 milliseconds
+Average time: 4367.4805296003815 milliseconds
+
+# jetson orin nano , 2 concurrent
+Request 1 took 16416.75604298711 milliseconds
+Request 2 took 34503.21731099486 milliseconds
+Minimum time: 16416.75604298711 milliseconds
+Maximum time: 34503.21731099486 milliseconds
+Median time: 34503.21731099486 milliseconds
+Average time: 25459.986676990986 milliseconds
