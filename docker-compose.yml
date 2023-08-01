@@ -63,8 +63,8 @@ services:
       - ~/.ssh:/root/.ssh
 
     deploy:
-      mode: replicated
-      replicas: 4
+      # mode: replicated
+      # replicas: 4
       resources:
         reservations:
           devices:

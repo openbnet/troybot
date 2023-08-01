@@ -39,7 +39,7 @@ async function main() {
     const decodedWav = wav.decode(wavData);
     const audioData = decodedWav.channelData[0]; // Assuming mono audio (channel 0)
 
-    const numRequests = 30;
+    const numRequests = 20;
     const requestPromises: Promise<number>[] = [];
 
     for (let i = 0; i < numRequests; i++) {
