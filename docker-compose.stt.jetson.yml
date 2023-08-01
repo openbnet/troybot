@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  stt:
+    environment:
+      - CUDA_LAUNCH_BLOCKING=1
+    build:
+      context: ./services/stt
+      dockerfile: Dockerfile.jetson
+    volumes:
+      - /data/voice:/data/voice
+      - /data/ai-voice-cloning:/data/ai-voice-cloning
+      - ~/.cache:/root/.cache/
+      - ~/.ssh:/root/.ssh
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
