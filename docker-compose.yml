@@ -50,27 +50,27 @@ services:
     volumes:
       - ./services/webapp/:/app
 
-  stt:
-    environment:
-      - CUDA_LAUNCH_BLOCKING=1
-    build:
-      context: ./services/stt
-      dockerfile: Dockerfile
-    volumes:
-      - /data/voice:/data/voice
-      - /data/ai-voice-cloning:/data/ai-voice-cloning
-      - ~/.cache:/root/.cache/
-      - ~/.ssh:/root/.ssh
+  # stt:
+  #   environment:
+  #     - CUDA_LAUNCH_BLOCKING=1
+  #   build:
+  #     context: ./services/stt
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - /data/voice:/data/voice
+  #     - /data/ai-voice-cloning:/data/ai-voice-cloning
+  #     - ~/.cache:/root/.cache/
+  #     - ~/.ssh:/root/.ssh
 
-    deploy:
-      # mode: replicated
-      # replicas: 4
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [ gpu ]
+  #   deploy:
+  #     # mode: replicated
+  #     # replicas: 4
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: 1
+  #             capabilities: [ gpu ]
 
   tts-piper:
     restart: always
