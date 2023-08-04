@@ -114,7 +114,7 @@ Intents: [
         ],
         responses: [
             {
-                text: "UnitDetails.AskingPricePSF",
+                text: "UNUSED",
                 action: "JsonLogicAction",
                 actionConfig: {
                     "*": [{ var: "UnitDetails.Size" }, { var: "UnitDetails.AskingPricePSF" }]
