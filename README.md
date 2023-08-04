@@ -115,7 +115,7 @@ Intents: [
                 text: "UnitDetails.AskingPricePSF",
                 action: "JsonLogicAction",
                 actionConfig: {
-                    "+": [{ var: "UnitDetails.Size" }, { var: "UnitDetails.AskingPricePSF" }]
+                    "*": [{ var: "UnitDetails.Size" }, { var: "UnitDetails.AskingPricePSF" }]
                 },
                 actionResponse: "The owner is asking for $${actionOutput}",
             }
