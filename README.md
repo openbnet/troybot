@@ -70,6 +70,8 @@ UnitDetails: {
 
 ### Real estate Intents
 
+The main templating features revolve around https://jmespath.org/ and https://jsonlogic.com/operations.html
+
 ```
 Intents: [
     {
