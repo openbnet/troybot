@@ -19,7 +19,8 @@
 # DEALINGS IN THE SOFTWARE.
 FROM nvcr.io/nvidia/l4t-ml:r35.2.1-py3
 
-RUN pip install nats.py soundfile openai-whisper transformers
+RUN python3 -m pip install nats.py
+RUN pip3 install soundfile openai-whisper transformers
 
 # Set the working directory
 WORKDIR /app
