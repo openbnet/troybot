@@ -71,12 +71,12 @@ services:
               count: 1
               capabilities: [ gpu ]
 
-  tts-piper:
-    restart: always
-    container_name: tts-piper
-    build:
-      context: ./services/tts_piper
-      dockerfile: Dockerfile
+  # tts-piper:
+  #   restart: always
+  #   container_name: tts-piper
+  #   build:
+  #     context: ./services/tts_piper
+  #     dockerfile: Dockerfile
 
   tts-tortise:
     environment:

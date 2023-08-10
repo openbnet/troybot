@@ -19,9 +19,9 @@ describe('End-to-End Test', () => {
 
     it('should receive a response when sending "hello"', async () => {
         // Prepare the test data
-        const response = await nc.request("service.nlu", jc.encode({ data: "hello" }), {
-            timeout: 20000
+        const response = await nc.request("service.tortise", jc.encode({ data: "Hello how are you" }), {
+            timeout: 10000
         });
         console.log("response", response)
-    }, 20000);
+    }, 60000);
 });
