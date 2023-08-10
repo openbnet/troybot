@@ -4,13 +4,16 @@ import {
     StringCodec,
     JSONCodec
 } from "nats";
+import fs from "fs";
+import http from "http"
+import { keccak256 } from "@ethersproject/keccak256";
 
 const sc = StringCodec();
 const jc = JSONCodec();
-
+const CACHE_FOLDER = "./cache/";
 async function main() {
     const nc: NatsConnection = await connect({
-        servers: "localhost:4222",
+        servers: "nats_local:4222",
         user: "tortise_tts",
         pass: "password"
     });
@@ -20,9 +23,31 @@ async function main() {
     (async () => {
         for await (const m of sub) {
             console.log("m reply", m.reply);
-            await m.respond(
-                sc.encode("ok")
-            );
+            const msg = sc.decode(m.data)
+            console.log("msg", msg)
+            const cachedFilePath = getCachedFilePath(msg);
+            console.log("cachedFilePath", cachedFilePath)
+            if (fs.existsSync(cachedFilePath)) {
+                const cachedAudio = fs.readFileSync(cachedFilePath).toString("base64");
+                await m.respond(sc.encode(cachedAudio));
+            } else {
+                const remoteAudioPath = await getTortiseTTS(msg);
+
+                // Download audio from remote URL
+                const file = fs.createWriteStream(cachedFilePath);
+                http.get(remoteAudioPath, function (response) {
+                    response.pipe(file);
+
+                    // after download completed close filestream
+                    file.on("finish", async () => {
+                        file.close();
+                        console.log("Download Completed");
+                        await m.respond(sc.encode(fs.readFileSync(cachedFilePath).toString("base64")));
+                    });
+                });
+
+
+            }
         }
     })();
 }
@@ -33,9 +58,13 @@ async function run() {
 
 run();
 
-
+function getCachedFilePath(msg: string) {
+    const hashedMsg = keccak256(sc.encode(msg))
+    console.log("hashedMsg", hashedMsg)
+    return `${CACHE_FOLDER}${hashedMsg}.wav`;
+}
 async function getTortiseTTS(msg: string) {
-    const url = "http://tts-tortise:7680";
+    const url = "http://tortise-tts:7680";
     try {
         const response = await fetch(url + "/run/generate", {
             method: "POST",
@@ -81,7 +110,6 @@ async function getTortiseTTS(msg: string) {
         if (!audioData) {
             throw new Error("Failed to get TTS audio");
         }
-        console.log("got audioData", audioData);
         return url + "/file=" + audioData.name;
     } catch (error) {
         console.error("TTS error", error);

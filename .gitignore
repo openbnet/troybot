@@ -27,3 +27,5 @@ templates/rasa/models/*
 templates/rasa/tensorboard/*
 templates/rasa/tests/*
 templates/rasa/domain.yml
+
+cache/*

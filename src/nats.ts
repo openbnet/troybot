@@ -125,10 +125,6 @@ async function main() {
           responseTxt += res.text;
         }
       }
-
-      // get tts
-      const response_wav = await getTortiseTTS(responseTxt)
-      console.log("gona respond", response_wav);
       await m.respond(
         jc.encode({
           responses,

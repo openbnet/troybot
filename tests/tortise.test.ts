@@ -19,9 +19,9 @@ describe('End-to-End Test', () => {
 
     it('should receive a response when sending "hello"', async () => {
         // Prepare the test data
-        const response = await nc.request("service.tortise", jc.encode({ data: "Hello how are you" }), {
+        const response = await nc.request("service.tortise", sc.encode("Hi. I'm Troy, a bot for OpenB Networks. We are a software development consultancy that specializes in blockchain and AI solutions. We have tons of experience with enterprise systems."), {
             timeout: 10000
         });
-        console.log("response", response)
+        console.log("response", sc.decode(response.data))
     }, 60000);
 });

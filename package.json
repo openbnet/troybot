@@ -10,7 +10,7 @@
     "actionServer": "ts-node src/nats.ts",
     "Rasa:Generate": "ts-node services/rasaConfigGenerator/generateRasa.ts",
     "bench:stt": "ts-node benchmark/bench_stt.ts",
-    "tortisetts": "ts-node src/tortiseCache.ts"
+    "tortiseCache": "ts-node src/tortiseCache.ts"
   },
   "dependencies": {
     "@ethersproject/keccak256": "^5.7.0",

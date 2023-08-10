@@ -4,7 +4,10 @@ RUN apk update && apk add git
 # Set the working directory inside the container
 WORKDIR /app
 # Copy the source code to the container
-COPY . /app
+COPY ./*.json /app
+COPY ./common /app/common
+COPY ./src /app/src
+COPY ./client /app/client
 # Install dependencies
 RUN npm install
 # Build the TypeScript code
