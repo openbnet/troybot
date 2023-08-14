@@ -59,6 +59,35 @@ export type AboutUs = {
   featuredPeople: FeaturedPerson[];
   text: string;
 };
+
+export type NearByItem = {
+  type: string;
+  name: string;
+  distance: string;
+
+}
+export type NearBy = {
+  transport?: NearByItem[]
+  malls?: NearByItem[]
+  groceries?: NearByItem[]
+  eateries?: NearByItem[]
+  schools?: NearByItem[]
+  recreation?: NearByItem[]
+}
+export type RealEstateItem = {
+  id: string;
+  display_name: string;
+  synonyms: [];
+  description: string;
+  class: string;
+  size: number;
+  main_address: string;
+  unit_address: string;
+  rooms: number;
+  bath: number;
+  asking_psf_price: number;
+  nearby: NearBy
+}
 export type CustomerSettings = {
   version: string;
   id: string;
@@ -67,7 +96,8 @@ export type CustomerSettings = {
   orderChannel: Channel;
   Store?: StoreSettings;
   Tables?: TableSettings[];
-  SalesItems: SalesItem[]
+  SalesItems?: SalesItem[];
+  RealEstateItem: RealEstateItem;
   Intents: Intent[];
   EntityFills: EntityFill[];
   Agent: {

@@ -332,6 +332,9 @@ function writeIntentEntityAsks(writePath: string, intents: Intent[], customer: C
 
   for (const entFill of customer.EntityFills) {
     const values = standardObj[entFill.mappedTo]
+    if (!values) {
+      return
+    }
     if (!values[0]) {
       throw new Error("values not array ")
     }

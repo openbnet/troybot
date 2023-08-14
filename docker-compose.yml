@@ -26,7 +26,7 @@ services:
       - .env
     command: run --enable-api --cors "*" --debug -m /models/${RASA_MODEL}
     #command: run --help
-
+  
   action_server:
     restart: always
     container_name: actionServer
@@ -112,5 +112,26 @@ services:
               count: 1
               capabilities: [ gpu ]
 
+
+  # rvc:
+  #   environment:
+  #     - CUDA_LAUNCH_BLOCKING=1
+  #   build:
+  #     context: ./services/Retrieval-based-Voice-Conversion-WebUI
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - /data/voice:/data/voice
+  #     - ~/.cache:/root/.cache/
+  #     - ~/.ssh:/root/.ssh
+  #     - ./services/Retrieval-based-Voice-Conversion-WebUI:/home/user/rvc
+  #   ports:
+  #     - "7865:7865"
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: 1
+  #             capabilities: [ gpu ]
 volumes:
   nats_data1:
