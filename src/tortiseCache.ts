@@ -64,7 +64,7 @@ function getCachedFilePath(msg: string) {
     return `${CACHE_FOLDER}${hashedMsg}.wav`;
 }
 async function getTortiseTTS(msg: string) {
-    const url = "http://tortise-tts:7680";
+    const url = "http://tts-tortise:7680";
     try {
         const response = await fetch(url + "/run/generate", {
             method: "POST",

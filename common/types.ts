@@ -69,6 +69,7 @@ export type CustomerSettings = {
   Tables?: TableSettings[];
   SalesItems: SalesItem[]
   Intents: Intent[];
+  UnknownIntentFallback: Intent;
   EntityFills: EntityFill[];
   Agent: {
     supportedLanguages: SupportLanguage[]; //first item will be default language
@@ -83,8 +84,36 @@ export type CustomerSettings = {
       url: string;
     };
   };
+  RealEstateItem: RealEstateItem
 };
+export type NearByItem = {
+  type: string;
+  name: string;
+  distance: string;
 
+}
+export type NearBy = {
+  transport?: NearByItem[]
+  malls?: NearByItem[]
+  groceries?: NearByItem[]
+  eateries?: NearByItem[]
+  schools?: NearByItem[]
+  recreation?: NearByItem[]
+}
+export type RealEstateItem = {
+  id: string;
+  display_name: string;
+  synonyms: [];
+  description: string;
+  class: string;
+  size: number;
+  main_address: string;
+  unit_address: string;
+  rooms: number;
+  bath: number;
+  asking_psf_price: number;
+  nearby: NearBy
+}
 export type EntityFillMapping = {
   jmesPath: string;
   noSuggestRes: string; // jmesPathString

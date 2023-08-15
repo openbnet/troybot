@@ -13,284 +13,219 @@ export const Customer: CustomerSettings = {
         token: "245198158:AAH3nfivutWvIYVDcrn5IHc1lQpno512TEU"
     },
     SalesItems: [
-        {
-            id: "wordpress",
-            class: "web",
-            sizes: [
+    ],
+    RealEstateItem: {
+        // https://www.propertyguru.com.sg/listing/for-sale-the-lumos-24480308
+        id: "TheLumos_16-01",
+        class: "condo",
+        main_address: "9 Leonie Hill",
+        unit_address: "16-01",
+        rooms: 4,
+        bath: 3,
+        size: 2432, //sq ft
+        asking_psf_price: 2524,
+        display_name: "The Lumos",
+        synonyms: [],
+        description: "4 Bedder Unit With Private Lift & Unblocked Views",
+        nearby: {
+            transport: [
                 {
-                    name: "Basic package",
-                    synonyms: ["standard package"],
-                    addPrice: 1000
+                    type: "MRT",
+                    name: "Great World (TE15)",
+                    distance: "0.6" // km
+                },
+                {
+                    type: "MRT",
+                    name: "Somerset MRT (NS23)",
+                    distance: "0.79" // km
                 }
             ],
-            display_name: "Wordpress development",
-            synonyms: [],
-            description: "We only support wpengine hosted sites",
-        },
-        {
-            id: "evm",
-            class: "blockchain",
-            display_name: "Etherum virtual machine development",
-            synonyms: [],
-            sizes: [
+            malls: [
                 {
-                    name: "Man day",
-                    synonyms: ["Developer day"],
-                    addPrice: 1600
-                }
-            ],
-            description: "Custom smart contracts",
-        },
-        {
-            id: "chatbot",
-            class: "ai",
-            display_name: "Custom chatbots",
-            synonyms: [],
-            sizes: [
+                    type: "ShoppingCenter",
+                    name: "Scape",
+                    distance: "0.46"
+                },
                 {
-                    name: "Man day",
-                    synonyms: ["Developer day"],
-                    addPrice: 1600
-                }
-            ],
-            description:
-                "We support development of chatbots using this TroyBot framework",
+                    type: "ShoppingCenter",
+                    name: "Takashimaya Shopping Centre",
+                    distance: "0.47"
+                },
+                {
+                    type: "ShoppingCenter",
+                    name: "ION Orchard",
+                    distance: "0.55"
 
-        },
-    ],
-    Intents: [
-        {
-            id: "GetSkills",
-            utterances: [
-                "tell me what you can do",
-                "what skills do you have",
-                "what features do you have",
-                "what can you do for me",
-                "how can you help me",
-                "what can you do"
+                }
             ],
-            responses: [
+            groceries: [
                 {
-                    text: "Intents[*].id",
-                    action: "JmesPathAction",
-                    actionResponse: "I have the following skills ${actionOutput}"
-                }
-            ]
-        },
-        {
-            id: "Affirm", // PrimitiveIntent
-            utterances: ["yes", "yes ${Polite}", "yup", "thats right"],
-            required_entities: ["requested_slot"],
-            noFills: ["Polite@Polite"]
-        },
-        {
-            id: "Deny", // PrimitiveIntent
-            utterances: [
-                "no",
-                "no ${Polite}",
-                "thats wrong",
-                "you are wrong",
-                "incorrect"
-            ],
-            required_entities: ["requested_slot"],
-            noFills: ["Polite@Polite"]
-        },
-        {
-            id: "ResetSession",
-            utterances: ["reset session", "forget everything"],
-            responses: [
-                {
-                    text: "Okay I have reset your session",
-                    resetContexts: true // false is default
-                }
-            ]
-        },
-        {
-            id: "UndoLast",
-            utterances: ["undo last message", "undo last command", "rewind"],
-            responses: [
-                {
-                    text: "Okay I have undone the last message",
-                    resetContexts: "rewind" // false is default
-                }
-            ]
-        },
-        {
-            id: "hello",
-            utterances: ["hi", "hello", "how are you", "whats up"],
-            responses: [
-                {
-                    text: "Hi. I'm Troy, a bot for OpenB Networks. We are a software development consultancy that specializes in blockchain and AI solutions. We have tons of experience with enterprise systems."
-                }
-            ]
-        },
-        {
-            id: "makeOrder",
-            utterances: [
-                "i want to order",
-                "i would like to make an order",
-                "I want to order ${Quantity} ${OrderItem} in ${Size}",
-                "i would like to order ${OrderItem}",
-                "i would like to order ${Quantity} ${OrderItem}",
-                "i would like to order ${Size} ${OrderItem}",
-                "i would like to order ${OrderItem} ${Size}",
-                "i would like to order ${OrderItem} ${Polite}",
-                "Can I order ${Quantity} ${Size} ${OrderItem}?",
-                "Can you add ${Quantity} ${Size} ${OrderItem} to my order?",
-                "can you add this item to my order?",
-                "give me ${OrderItem}",
-                "${Polite} give me ${OrderItem}",
-                "give me ${OrderItem} ${Polite}",
-                "give me ${Size} ${OrderItem}",
-                "give me ${Quantity} ${OrderItem}",
-                "give me ${Size} ${OrderItem} ${Polite}",
-                "${Polite} give me ${Size} ${OrderItem}",
-                "give me ${Size} ${OrderItem} ${Quantity}",
-                "${Polite} give me ${Size} ${OrderItem} ${Quantity}",
-                "give me ${Size} ${OrderItem} ${Quantity} ${Polite}"
-            ],
-            entities: [
-                "OrderItem@SalesItems",
-                "Size@SalesItemSizes",
-                "Quantity@SysNumber"
-            ],
-            noFills: ["Polite@Polite"],
-            responses: [
-                {
-                    text: "Okay, I've added ${Quantity} ${Size} ${OrderItem} to your order. What else would you like to order?",
-                    affectedContexts: [
-                        {
-                            name: "hasOrder",
-                            lifespanCount: 99 // max of 99 conversation turns
-                        }
-                    ],
-                    resetContexts: "mine", // false is default
-                    mapParamToObject: {
-                        LastOrderItem: {
-                            OrderItem: "makeOrder_OrderItem",
-                            Size: "makeOrder_Size",
-                            Quantity: "makeOrder_Quantity"
-                        }
-                    },
-                    storeObjectInArray: {
-                        OrderItems: "LastOrderItem"
-                    }
-                }
-            ]
-        },
-    ],
-    EntityFills: [
-        {
-            name: "OrderItem",
-            mappedTo: "SalesItems",
-            type: "text",
-            required: [],
-            overwriteSlot: {
-                type: "ask",
-                response: {
-                    text: "detectedEnt.value", // special value detectedEnt fit into only overwriteSlot actions
-                    action: "JmesPathAction",
-                    actionResponse:
-                        "Did you want to change your Order Item from ${OrderItem} to ${actionOutput}?"
-                }
-            },
-            validation: [
-                {
-                    onlyForIntents: ["makeOrder"],
-                    jmesPath: "SalesItems",
-                    noSuggestRes:
-                        "We do not sell ${OrderItem}. What item would you like to order?",
-                    suggestRes: "Did you want to order ${topSuggest}?" // topSuggest hardcoded into mapping handler
+                    type: "SuperMarket",
+                    name: "Cold Storage @ Takashimaya",
+                    distance: "0.47"
                 },
-            ],
-            responses: [
                 {
-                    onlyForIntents: ["makeOrder"],
-                    text: "What item would you like to order?"
+                    type: "SuperMarket",
+                    name: "CS Fresh @ Great World",
+                    distance: "0.63"
                 },
-            ] // handles no entity slot in
-        },
-        {
-            name: "Size",
-            mappedTo: "SalesItemSizes",
-            type: "text",
-            required: ["OrderItem"],
-            overwriteSlot: {
-                type: "ask",
-                response: {
-                    text: "detectedEnt.value", // special value detectedEnt fit into only overwriteSlot actions
-                    action: "JmesPathAction",
-                    actionResponse:
-                        "Did you want to change from ${Size} ${OrderItem} to ${actionOutput}?"
-                }
-            },
-            validation: [
                 {
-                    jmesPath:
-                        "SalesItems[?display_name=='${OrderItem}'].sizes[*].{value: name, synonyms: synonyms} | [0]",
-                    noSuggestRes:
-                        "it is not available in ${Size}. ${OrderItem} is available in ${actionOutput}, what would you like?",
-                    suggestRes: "Did you mean ${topSuggest}"
+                    type: "SuperMarket",
+                    name: "CS Fresh @ Paragon",
+                    distance: "0.63"
+                },
+                {
+                    type: "SuperMarket",
+                    name: "Fairprice @ Orchard Grand Court",
+                    distance: "0.75"
                 }
             ],
-            responses: [
+            eateries: [
                 {
-                    text: "SalesItems[?display_name=='${OrderItem}'].sizes[].name | []",
-                    action: "JmesPathAction",
-                    actionResponse:
-                        "${OrderItem} is available in ${actionOutput}, what would you like?",
-                    affectedContexts: [
-                        {
-                            name: "makeorder_dialog_context",
-                            lifespanCount: 99 // max of 99 conversation turns
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            name: "Quantity",
-            mappedTo: "SysNumber",
-            type: "float",
-            required: ["OrderItem", "Size"],
-            overwriteSlot: {
-                type: "ask",
-                response: {
-                    text: "detectedEnt.value", // special value detectedEnt fit into only overwriteSlot actions
-                    action: "JmesPathAction",
-                    actionResponse:
-                        "Did you want to change from ${Quantity} ${OrderItem} to ${actionOutput}?"
-                }
-            },
-            validation: [
+                    type: "FoodCourt",
+                    name: "Zion Riverside Food Centre",
+                    distance: "0.75"
+                },
                 {
-                    jmesPath: "SysNumber",
-                    noSuggestRes: "Sorry I did not get it, how many did you want?",
-                    suggestRes: "Did you mean ${topSuggest}"
+                    type: "Market",
+                    name: "Beo Crescent Market",
+                    distance: "1.25"
+                },
+                {
+                    type: "Market",
+                    name: "Havelock Road Cooked Food Centre ",
+                    distance: "1.26"
                 }
             ],
-            responses: [
+            schools: [
                 {
-                    text: "SalesItems[?display_name=='${OrderItem}'] | [0].sizes[?name=='${Size}'] | [0].addPrice",
-                    action: "JmesPathAction",
-                    actionResponse:
-                        "${Size} ${OrderItem} costs $${actionOutput}, how many would you like to order?",
-                    affectedContexts: [
-                        {
-                            name: "makeorder_dialog_context",
-                            lifespanCount: 99 // max of 99 conversation turns
-                        }
-                    ]
+                    type: "Primary",
+                    name: "River Valley Primary School",
+                    distance: "0.68",
+                },
+                {
+                    type: "Primary",
+                    name: "River Valley Primary School",
+                    distance: "0.68"
+                },
+                {
+                    type: "Primary",
+                    name: "Alexandra Primary School",
+                    distance: "1.21"
+                },
+                {
+                    type: "Primary",
+                    name: "Anglo-Chinese School (Junior)",
+                    distance: "1.55"
+                },
+                {
+                    type: "Primary",
+                    name: "Zhangde Primary School",
+                    distance: "1.79"
+                },
+                {
+                    type: "Secondary",
+                    name: "Gan Eng Seng School",
+                    distance: "1.45"
+                },
+                {
+                    type: "Secondary",
+                    name: "Outram Secondary School",
+                    distance: "1.5"
+                }, {
+                    type: "Secondary",
+                    name: "Crescent Girls' School",
+                    distance: "1.74"
+                }
+            ],
+            recreation: [
+                {
+                    type: "Park",
+                    name: "Ganges Avenue Open Space",
+                    distance: "0.92"
+                },
+                {
+                    type: "CommunityCenter",
+                    name: "Kim Seng Community Club",
+                    distance: "1.05"
+                },
+                {
+                    type: "Park",
+                    name: "Singapore Botanic Gardens",
+                    distance: "2.64"
                 }
             ]
         }
+    },
+    Intents: [
+        {
+            id: "UnitSize",
+            utterances: [
+                "how big is this place",
+                "how many square foot is this?",
+                "what is the size ah?",
+            ],
+            responses: [
+                {
+                    text: "RealEstateItem.size",
+                    action: "JmesPathAction",
+                    actionResponse: "This unit is ${actionOutput} square feet"
+                }
+            ]
+        },
+        {
+            id: "UnitPricePSF",
+            utterances: [
+                "what is the PSF?",
+                "how much per square foot?",
+                "how much per square feet?",
+                "what is the square foot price?",
+            ],
+            responses: [
+                {
+                    text: "RealEstateItem.asking_psf_price",
+                    action: "JmesPathAction",
+                    actionResponse: "This unit is $${actionOutput} per square foot"
+                }
+            ]
+        },
+        {
+            id: "UnitPriceTotal",
+            utterances: [
+                "what is owner asking for?",
+                "what is the price",
+                "how much am i expecting to pay?"
+            ],
+            responses: [
+                {
+                    text: "UNUSED",
+                    action: "JsonLogicAction",
+                    actionConfig: {
+                        "*": [{ var: "RealEstateItem.size" }, { var: "RealEstateItem.asking_psf_price" }]
+                    },
+                    actionResponse: "The owner is asking for $${actionOutput}",
+                }
+            ]
+        },
+    ],
+    UnknownIntentFallback: {
+        id: "UnknownIntentFallback",
+        utterances: [
+        ],
+        responses: [
+            {
+                text: "Sorry I am not able to answer your question, is it related to this property?",
+            }
+        ]
+    },
+    EntityFills: [
     ],
     Agent: {
         supportedLanguages: ["en", "en-au"],
         defaultTimezone: "Asia/Singapore",
         stackDriverLogs: false,
         interactionLogs: true,
-        mlMinimumConfidence: 0.3,
+        mlMinimumConfidence: 0.6,
         fuzzyAutoAcceptConfidence: 0.8,
         rasaOptions: {
             // url: "http://0.0.0.0:5005",

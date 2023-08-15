@@ -518,8 +518,19 @@ export function getBestIntentRasa(
 
   if (!loopIntent) throw new Error("ts");
   if (!loopDetEnt) throw new Error("ts");
-  // console.log("loopIntent",loopIntent.id,loopDetEnt)
+
+
+  console.log("getBestIntentRasa", loopIntent, NLUIntent)
   NLUIntent.intent = loopDetEnt;
+  // switch to UnknownIntentFallback if Agent.mlMinimumConfidence
+  if (loopIntent.confidence && loopIntent.confidence <= customer.Agent.mlMinimumConfidence) {
+    loopIntent = customer.UnknownIntentFallback
+    NLUIntent.intent = {
+      name: "UnknownIntentFallback",
+      confidence: customer.Agent.mlMinimumConfidence
+    }
+  }
+
   return [loopIntent, NLUIntent];
 }
 

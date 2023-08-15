@@ -85,7 +85,6 @@ async function main() {
   const sub = await nc.subscribe(subj, { queue: "nlu" });
   (async () => {
     for await (const m of sub) {
-      console.log("got m of sub", sub);
       console.log("m reply", m.reply);
       const client_id = m.reply?.split(".")[1];
       if (!client_id) throw Error("no client id");
