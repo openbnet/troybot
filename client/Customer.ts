@@ -207,6 +207,18 @@ export const Customer: CustomerSettings = {
                 }
             ]
         },
+        {
+            id: "ToiletBowlBrand",
+            utterances: [
+                "What brand is the toilet bowl?",
+                "what toilet bowl is installed?",
+            ],
+            responses: [
+                {
+                    text: "Sorry I am not sure what toilet bowl is used, let me check with the owner and get back to you.",
+                }
+            ]
+        },
     ],
     UnknownIntentFallback: {
         id: "UnknownIntentFallback",
