@@ -63,7 +63,6 @@ export type CustomerSettings = {
   version: string;
   id: string;
   nlu: "es" | "rasa" | "rasaAction";
-  defaultResponse: Response;
   orderChannel: Channel;
   Store?: StoreSettings;
   Tables?: TableSettings[];
@@ -190,7 +189,7 @@ export type Intent = {
   inputContexts?: string[];
   // oneOf below
   if?: intentIf;
-  responses?: Response[];
+  responses?: Response[][];
   // endOneof
   childIntents?: Intent[];
   confidence?: number; // used only to append values to it during processing, dont use for config

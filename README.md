@@ -125,3 +125,85 @@ Intents: [
     },
 ]
 ```
+
+
+### Configuring Customer.ts
+
+#### Intent
+
+id: Unique string
+
+utterances: ways user can ask the question, supply 3 - 10 different ways of asking the same thing
+
+entities: this is to define the entities that are expected to be supplied in the user input. If the user does not input the entity, it will go to the EntityFill loop to request the input from the user.
+
+noFills: this is like entities, except that it would not go to the entityfill loop if not included. This allows us to include these entities into the utterance templating engine, but we do not need it in our actual r 
+
+required_entities: intent would only be matched if the user's global state has such entities stored. 
+
+
+inputContexts: depre - used for dialogflow. required_entities is used instead
+
+if: allows if paths, might depre and use JsonLogic in responses instead
+
+responses: Response[][] - details below
+
+childIntents: define Intents that are dependent on the user being in the current intent flow. 
+
+
+#### Response
+
+
+text: if used without action, text would be the response
+
+
+Array of responses would be concatted into one response string
+```
+        responses: [
+            {
+                text: "Menu[?display_name=='${OrderItem}'] | [0].sizes[*].name",
+                action: "JmesPathAction",
+                affectedContexts: [{
+                    name: "getMenuItemDetails",
+                    lifespanCount: 3 // max of 99 conversation turns
+                }],
+                actionResponse: "We have it in ${actionOutput}"
+            },
+            {
+                text: "Menu[?display_name=='${OrderItem}'] | [0].sizes[*].addPrice",
+                action: "JmesPathAction",
+                resetContexts: "mine",
+                affectedContexts: [{
+                    name: "getMenuItemDetails",
+                    lifespanCount: 3 // max of 99 conversation turns
+                }],
+                actionResponse: "which cost ${actionOutput}"
+            }
+        ]
+```
+
+This would become 'We have it in small and medium which costs $5 and $10
+
+
+
+
+action?: when action is used, the response would be in actionResponse. Currently only support JmesPathAction and JsonLogicAction
+
+mapParamToObject: This takes detected entities and stores it to global state as an Object
+```
+          mapParamToObject: {
+            LastOrderItem: {
+              OrderItem: "makeOrder_OrderItem",
+              Size: "makeOrder_Size",
+              Quantity: "makeOrder_Quantity"
+            }
+          },
+```
+
+storeObjectInArray: this takes global state objects, and stores it as an array
+```
+
+          storeObjectInArray: {
+            OrderItems: "LastOrderItem"
+          }
+```

@@ -163,14 +163,27 @@ export const Customer: CustomerSettings = {
                 "what is the size ah?",
             ],
             responses: [
-                {
-                    text: "RealEstateItem.size",
-                    action: "JmesPathAction",
-                    actionResponse: "This unit is ${actionOutput} square feet"
-                },
-                {
-                    text: "Would you like me to email you a broucher?",
-                }
+                [
+                    {
+                        text: "RealEstateItem.size",
+                        action: "JmesPathAction",
+                        actionResponse: "This unit is ${actionOutput} square feet"
+                    },
+                    {
+                        text: "Would you like me to email you a broucher?",
+                    }
+                ],
+                [
+                    {
+                        text: "RealEstateItem.size",
+                        action: "JmesPathAction",
+                        actionResponse: "oh this unit is ${actionOutput} square feet"
+                    },
+                    {
+                        text: "You want me to email you a broucher?",
+                    }
+                ]
+
             ],
             childIntents: [
                 {
@@ -181,18 +194,23 @@ export const Customer: CustomerSettings = {
                         "nope",
                     ],
                     responses: [
-                        {
-                            text: "Sure, is there anything else I can help you with?"
-                        }
+                        [
+                            {
+                                text: "Sure, is there anything else I can help you with?"
+                            }
+                        ]
+
                     ]
                 },
                 {
                     id: "UnitSize.Yes",
                     utterances: ["yes", "yea", "good idea"],
                     responses: [
-                        {
-                            text: "Sure, have sent the email. Is there anything else i can help you with?"
-                        }
+                        [
+                            {
+                                text: "Sure, have sent the email. Is there anything else i can help you with?"
+                            }
+                        ]
                     ]
                 }
             ]
@@ -206,11 +224,14 @@ export const Customer: CustomerSettings = {
                 "what is the square foot price?",
             ],
             responses: [
-                {
-                    text: "RealEstateItem.asking_psf_price",
-                    action: "JmesPathAction",
-                    actionResponse: "This unit is $${actionOutput} per square foot"
-                }
+                [
+                    {
+                        text: "RealEstateItem.asking_psf_price",
+                        action: "JmesPathAction",
+                        actionResponse: "This unit is $${actionOutput} per square foot"
+                    }
+                ]
+
             ]
         },
         {
@@ -221,14 +242,17 @@ export const Customer: CustomerSettings = {
                 "how much am i expecting to pay?"
             ],
             responses: [
-                {
-                    text: "UNUSED",
-                    action: "JsonLogicAction",
-                    actionConfig: {
-                        "*": [{ var: "RealEstateItem.size" }, { var: "RealEstateItem.asking_psf_price" }]
-                    },
-                    actionResponse: "The owner is asking for $${actionOutput}",
-                }
+                [
+                    {
+                        text: "UNUSED",
+                        action: "JsonLogicAction",
+                        actionConfig: {
+                            "*": [{ var: "RealEstateItem.size" }, { var: "RealEstateItem.asking_psf_price" }]
+                        },
+                        actionResponse: "The owner is asking for $${actionOutput}",
+                    }
+                ]
+
             ]
         },
         {
@@ -238,9 +262,12 @@ export const Customer: CustomerSettings = {
                 "what toilet bowl is installed?",
             ],
             responses: [
-                {
-                    text: "Sorry I am not sure what toilet bowl is used, let me check with the owner and get back to you.",
-                }
+                [
+                    {
+                        text: "Sorry I am not sure what toilet bowl is used, let me check with the owner and get back to you.",
+                    }
+                ]
+
             ]
         },
     ],
@@ -249,9 +276,12 @@ export const Customer: CustomerSettings = {
         utterances: [
         ],
         responses: [
-            {
-                text: "sorry im unable to answer your question ${input Q}, once i find the answer i'll get back to you.",
-            }
+            [
+                {
+                    text: "sorry im unable to answer your question ${input Q}, once i find the answer i'll get back to you.",
+                }
+            ]
+
         ]
     },
     EntityFills: [

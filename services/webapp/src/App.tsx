@@ -20,6 +20,14 @@ export default function App() {
   const [transcriptionHistory, setTranscriptionHistory] = createSignal<
     string[]
   >([]);
+  const [phoneNumber, setPhoneNumber] = createSignal<string | null>(
+    localStorage.getItem("phoneNumber") || null
+  );
+  const [name, setName] = createSignal<string | null>(
+    localStorage.getItem("name") || null
+  );
+
+
 
   onMount(async () => {
     const nc = await connect({
@@ -29,6 +37,7 @@ export default function App() {
     });
     console.log("got nc", nc);
     setNats(nc);
+
     if (typeof window.vadit === "function") {
       console.log("got window function");
       window.vadit(onSpeechEndCB).then((vad) => {
@@ -39,6 +48,39 @@ export default function App() {
     } else {
       console.log("cant find vait");
     }
+
+    // Check if session data exists in localStorage
+    let storedPhoneNumber = localStorage.getItem("phoneNumber");
+    let storedName = localStorage.getItem("name");
+
+    if (!storedPhoneNumber || !storedName) {
+      // Prompt the user for phone number and name
+      const newPhoneNumber = prompt("Please enter your phone number:");
+      const newName = prompt("Please enter your name:");
+      if (newPhoneNumber && newName) {
+        localStorage.setItem("phoneNumber", newPhoneNumber);
+        localStorage.setItem("name", newName);
+        setPhoneNumber(newPhoneNumber);
+        setName(newName);
+        storedName = newName
+        storedPhoneNumber = newPhoneNumber
+      } else {
+        alert("Phone number and name are required.");
+      }
+    }
+    // say hello
+    const ttsRes = await natsRequestTTS("service.tortise", `hello ${storedName}, I'm troy your agent. How can I help you?`);
+    console.log("ttsRes", ttsRes)
+    // Create a Howl instance
+    const howl = new Howl({
+      src: ["data:audio/wav;base64," + ttsRes],
+      // src: [ttsRes],
+      format: "wav",
+      onend: () => {
+        console.log("Sound has finished playing");
+      }
+    });
+    howl.play();
   });
 
   onCleanup(async () => {
@@ -75,7 +117,7 @@ export default function App() {
     try {
       console.log("gota request tts", subj, msg);
       const response = await nc.request(subj, sc.encode(msg), {
-        timeout: 20000
+        timeout: 30000
       });
       console.log("got res");
       // Convert the received Uint8Array response to string (assuming it's a string)
