@@ -151,7 +151,8 @@ export function processResponses(
   session: Session,
   responses: Response[],
   NLUContexts: OutputContext[] | RasaSlot,
-  filterForIntent?: string
+  filterForIntent?: string,
+  userText?: string,
 ): Response[] {
   const textResponses: Response[] = [];
 
@@ -190,7 +191,7 @@ export function processResponses(
     }
     else if (["rasa", "rasaAction"].includes(settings.nlu)) {
 
-      resSettings = Object.assign(resSettings, NLUContexts as RasaSlot, session.Entities)
+      resSettings = Object.assign(resSettings, NLUContexts as RasaSlot, session.Entities, { userText })
     }
 
     if (response.action) {

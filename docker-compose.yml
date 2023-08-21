@@ -124,7 +124,9 @@ services:
       - /data/voice:/data/voice
       - ~/.cache:/root/.cache/
       - ~/.ssh:/root/.ssh
-      - ./services/Retrieval-based-Voice-Conversion-WebUI:/app
+      - ./services/Retrieval-based-Voice-Conversion-WebUI/weights:/app/weights
+      - ./services/Retrieval-based-Voice-Conversion-WebUI/opt:/app/opt
+      - ./services/Retrieval-based-Voice-Conversion-WebUI/logs:/app/logs
     ports:
       - "7865:7865"
     deploy:

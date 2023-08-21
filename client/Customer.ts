@@ -250,7 +250,7 @@ export const Customer: CustomerSettings = {
         ],
         responses: [
             {
-                text: "sorry im unable to answer your question ${input Q}, once i find the answer i'll get back to you.",
+                text: "sorry im unable to answer your question ${userText}, once i find the answer i'll get back to you.",
             }
         ]
     },

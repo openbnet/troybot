@@ -302,6 +302,7 @@ export async function processMsg(
       NLUIntent.intent.name = bestIntent.id;
     }
   }
+  console.log("processMsg just before processIntent", NLUIntent)
 
   return await processIntent(
     customer,
@@ -309,7 +310,8 @@ export async function processMsg(
     bestIntent,
     NLUIntent,
     eventId,
-    userTrackers
+    userTrackers,
+    txt
   );
 }
 
@@ -540,7 +542,8 @@ export async function processIntent(
   intent: Intent,
   NLUIntent: RasaResponse,
   eventId: string,
-  events: UserTrackerEvent[]
+  events: UserTrackerEvent[],
+  userText: string
 ): Promise<[Response[], Session, UserTrackerEvent[]]> {
   if (!isValidIntent(intent)) {
     throw new Error("invalid intent");
@@ -624,7 +627,9 @@ export async function processIntent(
     customer,
     session,
     responsesToUse,
-    mySlots
+    mySlots,
+    undefined,
+    userText
   );
   session = resetContextsSession(customer, session, processedResponses);
 

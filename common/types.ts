@@ -189,7 +189,7 @@ export type Intent = {
   inputContexts?: string[];
   // oneOf below
   if?: intentIf;
-  responses?: Response[][];
+  responses?: Response[];
   // endOneof
   childIntents?: Intent[];
   confidence?: number; // used only to append values to it during processing, dont use for config
