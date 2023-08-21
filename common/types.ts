@@ -108,6 +108,7 @@ export type RealEstateItem = {
   size: number;
   main_address: string;
   unit_address: string;
+  maintainace_fee: number;
   rooms: number;
   bath: number;
   asking_psf_price: number;
