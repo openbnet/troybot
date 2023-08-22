@@ -6,8 +6,8 @@ import numpy as np
 from transformers import WhisperFeatureExtractor, WhisperTokenizer, AutoProcessor, WhisperForConditionalGeneration
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-# MODEL = "eighty88/whisper-medium-sg-50-2-30-part2-30-2"
-MODEL = "openai/whisper-large-v2"
+MODEL = "eighty88/whisper-medium-sg-50-2-30-part2-30-2"
+#MODEL = "openai/whisper-large-v2"
 tokenizer = WhisperTokenizer.from_pretrained(MODEL, language="en", task="transcribe")
 feature_extractor = WhisperFeatureExtractor.from_pretrained(MODEL, language="en", task="transcribe")
 tokenizer.set_prefix_tokens(language="en", task="transcribe")

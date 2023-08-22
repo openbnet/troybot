@@ -38,7 +38,7 @@ pipeline:
     entity_recognition: True
     learning_rate: 0.001
     batch_size: [32, 64]
-    epochs: 40
+    epochs: 200
     constrain_similarities: True
     use_masked_language_model: True
     embedding_dimension: 100

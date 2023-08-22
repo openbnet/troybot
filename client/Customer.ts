@@ -157,9 +157,27 @@ export const Customer: CustomerSettings = {
     },
     Intents: [
         {
+            id: "Affirm", // PrimitiveIntent
+            utterances: ["yes", "yes ${Polite}", "yup", "thats right"],
+            required_entities: ["requested_slot"],
+            noFills: ["Polite@Polite"]
+        },
+        {
+            id: "Deny", // PrimitiveIntent
+            utterances: [
+                "no",
+                "no ${Polite}",
+                "thats wrong",
+                "you are wrong",
+                "incorrect"
+            ],
+            required_entities: ["requested_slot"],
+            noFills: ["Polite@Polite"]
+        },
+        {
             id: "UnitSize",
             utterances: [
-                "how big is this place",
+                "how big is this unit",
                 "how many square foot the place?",
                 "what is the size of the unit?",
             ],
@@ -173,7 +191,10 @@ export const Customer: CustomerSettings = {
                     text: "NotUsed",
                     action: "JsonLogicAction",
                     actionConfig: {
-                        "*": [{ var: "RealEstateItem.size" }, "0.09290304"]
+                        "round": {
+                            "*": [{ var: "RealEstateItem.size" }, "0.09290304"]
+                        }
+
                     },
                     actionResponse: "or ${actionOutput} square meters",
                 },
@@ -217,18 +238,6 @@ export const Customer: CustomerSettings = {
             ]
         },
         {
-            id: "ToiletBowlBrand",
-            utterances: [
-                "What brand is the toilet bowl?",
-                "what toilet bowl is installed?",
-            ],
-            responses: [
-                {
-                    text: "Sorry I am not sure what toilet bowl is used, let me check with the owner and get back to you.",
-                }
-            ]
-        },
-        {
             id: "NumberRooms",
             utterances: [
                 "How many bedrooms are there in the unit?",
@@ -265,26 +274,28 @@ export const Customer: CustomerSettings = {
             ]
         },
         {
-            id: "UnitDesc",
+            id: "ProjectUnitDesc",
             utterances: [
                 "Tell me more about the ${RealEstateType}",
                 "Can you give me a description of the ${RealEstateType}",
                 "can you give me an overview of the ${RealEstateType}"
             ],
-            entities: ["RealEstateType@RealEstateType"],
+            entities: ["RealEstateType@RealEstateTypes"],
             responses: [
 
                 {
-                    text: "You can access the unit via the private lift lobby with its own foyer area. The main door faces South West. The dining room can confrotably sit a 10 seater dining roomto your left and the litchen to the right.  The dining room is connected to the living room to it left. A common walkway connects the master room, a jack and jill room and a junior master room. Behind the kitchen is a shared space for a study which can be converted into another bed room, There is also a space for a yard and a bomb shelter. This unit features an all round balconay with 360 panoramic view of orchard and greenview",
+                    text: "You can access the unit via the private lift lobby with its own foyer area. The main door faces South West. The dining room can comfortably sit a 10 seater dining room to your left and the kitchen to the right. The dining room is connected to the living room to it left. A common walkway connects the master room, a jack and jill room and a junior master room. Behind the kitchen is a shared space for a study which can be converted into another bed room, There is also a space for a yard and a bomb shelter. This unit features an all round balconay with 360 panoramic view of orchard and greenview",
                     booleanCondition: {
                         "==": [{ var: "RealEstateType" }, "unit"]
-                    }
+                    },
+                    resetContexts: "mine"
                 },
                 {
                     text: "This Freehold project, built by Buildhome Private Limited, T O P in 2011, with a low density of just 53 units.",
                     booleanCondition: {
                         "==": [{ var: "RealEstateType" }, "project"]
-                    }
+                    },
+                    resetContexts: "mine"
                 }
 
             ]
@@ -293,12 +304,13 @@ export const Customer: CustomerSettings = {
         {
             id: "ProjectFacilities",
             utterances: [
-                "What are the amenities in the condo?",
-                "What facilities does the condo have?",
-                "Condo facilities?",
-                "Condo Amenities?",
+                "What are the amenities in the ${RealEstateType}?",
+                "What facilities does the ${RealEstateType} have?",
+                "${RealEstateType} facilities?",
+                "${RealEstateType} Amenities?",
                 "Have swimming pool?"
             ],
+            noFills: ["RealEstateType@RealEstateTypes"],
             responses: [
                 {
                     text: "It has facilities like Gym room, Swimming pool, children playground, Barbeque pits and a 80 basement carpark lots.",
@@ -383,12 +395,12 @@ export const Customer: CustomerSettings = {
     EntityFills: [
         {
             name: "RealEstateType",
-            mappedTo: "RealEstateType",
+            mappedTo: "RealEstateTypes",
             type: "text",
             required: [],
             validation: [
                 {
-                    jmesPath: "RealEstateType",
+                    jmesPath: "RealEstateTypes",
                     noSuggestRes:
                         "Sorry I dont understand ${RealEstateType}. Did you want to know about the unit or the project?",
                     suggestRes: "Did you mean ${topSuggest}?" // topSuggest hardcoded into mapping handler
@@ -406,7 +418,7 @@ export const Customer: CustomerSettings = {
         defaultTimezone: "Asia/Singapore",
         stackDriverLogs: false,
         interactionLogs: true,
-        mlMinimumConfidence: 0.1,
+        mlMinimumConfidence: 0.7,
         fuzzyAutoAcceptConfidence: 0.8,
         rasaOptions: {
             // url: "http://0.0.0.0:5005",

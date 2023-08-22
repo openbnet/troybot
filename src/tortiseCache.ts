@@ -42,8 +42,8 @@ async function main() {
                     file.on("finish", async () => {
                         file.close();
                         console.log("Download Completed");
-                        const rvcRes = getRVC(cachedFilePath, fs.readFileSync(cachedFilePath).toString("base64"))
-                        console.log("rvcRes", rvcRes)
+                        // const rvcRes = getRVC(cachedFilePath, fs.readFileSync(cachedFilePath).toString("base64"))
+                        // console.log("rvcRes", rvcRes)
                         await m.respond(sc.encode(fs.readFileSync(cachedFilePath).toString("base64")));
                     });
                 });
@@ -82,8 +82,8 @@ async function getTortiseTTS(msg: string) {
                     0, // Voice chunks
                     1, // Candidates
                     0, // Seed
-                    2, // Samples
-                    8, // Iterations
+                    16, // Samples
+                    100, // Iterations
                     0.9, // Temperature
                     "P", // Diffusion Samplers
                     15, // Pause Size
@@ -141,7 +141,7 @@ async function getRVC(filename: string, wavbase64: string) {
 
                     "", // represents text string of 'Path to the feature index file. Leave blank to use the selected result from the dropdown:' Textbox component
 
-                    "logs/mi-test/added_IVF740_Flat_nprobe_1_mi-test_v2.index", // represents selected choice of 'Auto-detect index path and select from the dropdown:' Dropdown component
+                    "logs/ruru/added_IVF689_Flat_nprobe_1_ruru_v1.index", // represents selected choice of 'Auto-detect index path and select from the dropdown:' Dropdown component
 
                     0.75, // represents selected value of 'Search feature ratio (controls accent strength, too high has artifacting):' Slider component
 

@@ -2,6 +2,7 @@ import { CustomerSettings, EntityInstance, EntitySynonymType, SalesItem, Respons
 import * as Combinatorics from 'js-combinatorics'
 import { SysNumber } from "./sys.number";
 import { AlchoholTypes } from "./Alchohol";
+import { RealEstateTypes } from "./RealEstateTypes"
 import { Affirm } from "./Affirm";
 import { Deny } from "./Deny";
 import { Polite } from "./Polite";
@@ -95,6 +96,7 @@ export function getStandardObjects(settings: CustomerSettings): { [key: string]:
       SalesItems: buildMenuList(settings.SalesItems),
       SalesItemSizes: buildMenuItemSizes(settings.SalesItems),
       AlchoholTypes,
+      RealEstateTypes,
       SysNumber: SysNumber,
       Polite
       // Affirm,
@@ -105,6 +107,7 @@ export function getStandardObjects(settings: CustomerSettings): { [key: string]:
       SalesItems: buildMenuListRasa(settings.SalesItems),
       SalesItemSizes: buildMenuItemSizes(settings.SalesItems),
       AlchoholTypes: AlchoholTypes,
+      RealEstateTypes,
       SysNumber: SysNumber,
       Polite: Polite,
       // Affirm,
@@ -118,6 +121,7 @@ export function getRasaDomainLookup(settings: CustomerSettings): { [key: string]
     SalesItems: buildMenuListRasa(settings.SalesItems),
     SalesItemSizes: generateLookupTable(buildMenuItemSizes(settings.SalesItems)),
     AlchoholTypes: generateLookupTable(AlchoholTypes),
+    RealEstateTypes: generateLookupTable(RealEstateTypes),
     SysNumber: generateLookupTable(SysNumber),
     Polite: generateLookupTable(Polite),
     // Affirm,

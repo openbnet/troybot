@@ -1,7 +1,7 @@
 import { EntityInstance } from "./types"
 
 
-export const RealEstateType: EntityInstance[] = [
+export const RealEstateTypes: EntityInstance[] = [
     {
         value: "unit",
         synonyms: ["place"],

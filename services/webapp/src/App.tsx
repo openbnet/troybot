@@ -26,6 +26,7 @@ export default function App() {
   const [name, setName] = createSignal<string | null>(
     localStorage.getItem("name") || null
   );
+  const [ttsRequestTimes, setTTSRequestTimes] = createSignal<number[]>([]);
 
 
 
@@ -116,17 +117,26 @@ export default function App() {
     if (!nc) throw Error("no nc");
     try {
       console.log("gota request tts", subj, msg);
+
+      const startTime = performance.now(); // Record the start time
+
       const response = await nc.request(subj, sc.encode(msg), {
-        timeout: 30000
+        timeout: 90000,
       });
+
+      const endTime = performance.now(); // Record the end time
+
+      const timeTaken = endTime - startTime; // Calculate the time taken in milliseconds
+      setTTSRequestTimes((prevTimes) => [...prevTimes, timeTaken / 1000]); // Store the time in the state
+
       console.log("got res");
-      // Convert the received Uint8Array response to string (assuming it's a string)
       return sc.decode(response.data);
     } catch (error) {
       console.error("nc error", error);
       throw Error("cant req");
     }
   };
+
 
 
   // recording stuff
@@ -141,7 +151,7 @@ export default function App() {
     let responseTxt = "";
     for (const res of nluRes.responses) {
       if (res.text) {
-        responseTxt += res.text;
+        responseTxt += " " + res.text;
       }
     }
     setSession(nluRes.session);
@@ -191,12 +201,13 @@ export default function App() {
                   const ratio = parseFloat(
                     responseInfo.split(", Ratio: ")[1].replace(")", "")
                   );
-
+                  const ttsTime = ttsRequestTimes()[index]; // Get the corresponding time
+                  const ttsTimeDisplay = ttsTime !== undefined ? `${ttsTime} s` : "N/A";
                   return (
                     <li class="chat-message">
                       {transcription}
                       <div class="response-info">
-                        Response: {responseTime}s, Ratio: {ratio}
+                        Response: {responseTime}s, Ratio: {ratio}, TTS Time: {ttsTimeDisplay}
                       </div>
                     </li>
                   );

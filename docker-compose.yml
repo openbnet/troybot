@@ -98,7 +98,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - /data/voice:/data/voice
-      - /data/ai-voice-cloning:/data/ai-voice-cloning
+      # - /data/ai-voice-cloning:/data/ai-voice-cloning
       - ~/.cache:/root/.cache/
       - ~/.ssh:/root/.ssh
       - ./services/ai-voice-cloning:/home/user/ai-voice-cloning

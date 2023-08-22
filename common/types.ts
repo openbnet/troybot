@@ -165,6 +165,7 @@ export type Response = {
   mapParamToObject?: ParamSettingsObject;
   removeObjectInArray?: ParamRemoveByKey;
   setSlots?: RasaSlot;
+  booleanCondition?: Record<string, any>;
   storeObjectInArray?: {
     [arrayKey: string]: string;
   };

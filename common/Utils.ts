@@ -124,7 +124,9 @@ jsonLogic.add_operation('calculateOrderPrice', function (OrderItems: SalesItemOr
   });
   return totalPrice;
 });
-
+jsonLogic.add_operation('round', function (numInString: string) {
+  return Math.round(Number(numInString))
+});
 jsonLogic.add_operation('jmespath', function (query: string, data: object) {
   // console.log("jmespath operation",  query,data)
 
@@ -161,6 +163,8 @@ export function processResponses(
       if (response.onlyForIntents && !response.onlyForIntents.includes(filterForIntent))
         continue;
     }
+
+
     let resSettings = JSON.parse(JSON.stringify(settings))
     if (settings.nlu === "es") {
       for (const affectedContext of response.affectedContexts || [nullContext]) {
@@ -193,7 +197,13 @@ export function processResponses(
 
       resSettings = Object.assign(resSettings, NLUContexts as RasaSlot, session.Entities, { userText })
     }
+    /// deal with response.booleanCondition
 
+    if (response.booleanCondition) {
+      if (jsonLogic.apply(response.booleanCondition, resSettings) == false) {
+        continue
+      }
+    }
     if (response.action) {
       if (response.actionResponse === undefined) {
         throw new Error("action requires actionResponse")
