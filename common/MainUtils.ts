@@ -723,9 +723,9 @@ export function getInterruptedIntent(
       action: lastEvent.action
     });
 
-    returnRes.push({
-      text: `<break time='1s'/>`
-    });
+    // returnRes.push({
+    //   text: `<break time='1s'/>`
+    // });
     returnRes.push(
       ...processResponses(
         customer,

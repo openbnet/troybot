@@ -21,7 +21,7 @@ export const Customer: CustomerSettings = {
         bath: 3,
         size: 2432, //sq ft
         asking_psf_price: 2524,
-        maintainace_fee: 920,
+        maintaince_fee: 920,
         display_name: "The Lumos",
         synonyms: [],
         description: "4 Bedder Unit With Private Lift & Unblocked Views",
@@ -96,11 +96,6 @@ export const Customer: CustomerSettings = {
                 }
             ],
             schools: [
-                {
-                    type: "Primary",
-                    name: "River Valley Primary School",
-                    distance: "0.68",
-                },
                 {
                     type: "Primary",
                     name: "River Valley Primary School",
@@ -277,9 +272,12 @@ export const Customer: CustomerSettings = {
             id: "ProjectUnitDesc",
             utterances: [
                 "Tell me more about the ${RealEstateType}",
+                "${Polite} Tell me more about the ${RealEstateType}",
                 "Can you give me a description of the ${RealEstateType}",
+                "${Polite} Can you give me a description of the ${RealEstateType}",
                 "can you give me an overview of the ${RealEstateType}"
             ],
+            noFills: ["Polite@Polite"],
             entities: ["RealEstateType@RealEstateTypes"],
             responses: [
 
@@ -314,7 +312,7 @@ export const Customer: CustomerSettings = {
             responses: [
                 {
                     text: "It has facilities like Gym room, Swimming pool, children playground, Barbeque pits and a 80 basement carpark lots.",
-                },
+                }
             ]
         },
         {
@@ -378,6 +376,18 @@ export const Customer: CustomerSettings = {
                     text: "RealEstateItem.nearby.schools[?type == 'Secondary'].distance | []",
                     action: "JmesPathAction",
                     actionResponse: "that are ${actionOutput} kilometers away"
+                }
+            ]
+        },
+        {
+            id: "UnknownIntentFallback",
+            utterances: [
+                "trigger unknown intent fallback",
+                "can you show me the fallback workflow"
+            ],
+            responses: [
+                {
+                    text: "sorry im unable to answer your question ${userText}, once i find the answer i'll get back to you.",
                 }
             ]
         }

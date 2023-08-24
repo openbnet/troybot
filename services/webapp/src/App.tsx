@@ -26,7 +26,7 @@ export default function App() {
   const [name, setName] = createSignal<string | null>(
     localStorage.getItem("name") || null
   );
-  const [ttsRequestTimes, setTTSRequestTimes] = createSignal<number[]>([]);
+
 
 
 
@@ -126,9 +126,11 @@ export default function App() {
 
       const endTime = performance.now(); // Record the end time
 
-      const timeTaken = endTime - startTime; // Calculate the time taken in milliseconds
-      setTTSRequestTimes((prevTimes) => [...prevTimes, timeTaken / 1000]); // Store the time in the state
-
+      const timeTaken = endTime - startTime; // Calculate the time taken in milliseconds// Store the time in the state
+      setTranscriptionHistory((prevHistory) => [
+        ...prevHistory,
+        `TTS Time: ${timeTaken / 1000}`
+      ]);
       console.log("got res");
       return sc.decode(response.data);
     } catch (error) {
@@ -140,7 +142,11 @@ export default function App() {
 
 
   // recording stuff
+  let howlInstance;
   async function onSpeechEndCB(audio) {
+    if (howlInstance) {
+      howlInstance.stop()
+    }
     console.log("onSpeechEndCB", audio);
     const startTime = Date.now();
     const nluRes = await natsRequestNLU("service.nlu", audio);
@@ -169,7 +175,7 @@ export default function App() {
     const ttsRes = await natsRequestTTS("service.tortise", responseTxt);
     console.log("ttsRes", ttsRes)
     // Create a Howl instance
-    const howl = new Howl({
+    howlInstance = new Howl({
       src: ["data:audio/wav;base64," + ttsRes],
       // src: [ttsRes],
       format: "wav",
@@ -177,10 +183,8 @@ export default function App() {
         console.log("Sound has finished playing");
       }
     });
-
-    console.log("howl", howl);
     // Play the audio
-    howl.play();
+    howlInstance.play();
   }
 
   return (
@@ -201,13 +205,11 @@ export default function App() {
                   const ratio = parseFloat(
                     responseInfo.split(", Ratio: ")[1].replace(")", "")
                   );
-                  const ttsTime = ttsRequestTimes()[index]; // Get the corresponding time
-                  const ttsTimeDisplay = ttsTime !== undefined ? `${ttsTime} s` : "N/A";
                   return (
                     <li class="chat-message">
                       {transcription}
                       <div class="response-info">
-                        Response: {responseTime}s, Ratio: {ratio}, TTS Time: {ttsTimeDisplay}
+                        Response: {responseTime}s, Ratio: {ratio}
                       </div>
                     </li>
                   );

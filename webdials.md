@@ -5,7 +5,7 @@
 3. Persistant store of user phone number, and list of questions that needs a callback
 
 
-4. API for new questions
+4. API for new questions response
     1. Check against persistant store to see if we filled up all the asked questions. make callback if filled.
 
 
@@ -13,6 +13,7 @@
 
  - Email API
  - New question API
+    - require new utterance mapping to existing Intent
 
 
 ### Reuse code blocks 

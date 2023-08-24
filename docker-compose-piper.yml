@@ -16,7 +16,7 @@ services:
   rasa:
     restart: always
     container_name: rasa-container
-    image: rasa/rasa:3.6.4-full
+    image: rasa/rasa:3.6.6-full
     ports:
       - "5005:5005"
     volumes:
@@ -26,6 +26,13 @@ services:
       - .env
     command: run --enable-api --cors "*" --debug -m /models/${RASA_MODEL}
     #command: run --help
+
+  duckling:
+    restart: always
+    container_name: duckling
+    image: rasa/duckling
+    ports:
+      - "8000:8000"
 
   action_server:
     restart: always

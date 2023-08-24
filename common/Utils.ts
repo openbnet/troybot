@@ -754,9 +754,9 @@ export function processIntent(settings: CustomerSettings, session: Session, inte
       })
       session.Entities.requested_slot = joiningIntent + "_" + entKey;
       session.lastIntent = joiningIntent
-      responses.push({
-        text: `<break time='1s'/>`
-      })
+      // responses.push({
+      //   text: `<break time='1s'/>`
+      // })
       responses.push(
         ...processResponses(settings, session, matchedEntityFill.responses, mySlots, joiningIntent)
       )
