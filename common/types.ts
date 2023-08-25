@@ -156,7 +156,7 @@ export type resetContextsType = boolean | "mine" | undefined | "rewind";
 export type Response = {
   text: string;
   affectedContexts?: OutputContext[];
-  action?: "JmesPathAction" | "JsonLogicAction";
+  action?: "JmesPathAction" | "JsonLogicAction" | "Email";
   prefixActionOutputArray?: string; // only for JmesPathAction that outputs arrays
   resetContexts?: resetContextsType; // only applies to last response in array. mine will reset only your entities in slots
   actionResponse?: string;

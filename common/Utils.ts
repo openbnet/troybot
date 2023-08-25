@@ -10,7 +10,12 @@ import { getActionOutput, getMainValueFromEntitySynonym, getStandardObjects, get
 import { sendMessageTelegram } from "./Telegram";
 import FuzzySet from "fuzzyset.js";
 import { sortRasaEntities, mergeRepeatedEntities } from "./RasaUtils";
-
+import { getEmailLLM } from "./LLM"
+import { transformEmailToSpeechText } from "./Email"
+import {
+  connect,
+  NatsConnection,
+} from "nats";
 export function decodeValue(value: google.protobuf.IValue): any {
   if (value.structValue) {
     return decodeStruct(value.structValue);
@@ -148,14 +153,14 @@ const nullContext = {
   name: "DONTEXIST",
   lifespanCount: 0,
 }
-export function processResponses(
+export async function processResponses(
   settings: CustomerSettings,
   session: Session,
   responses: Response[],
   NLUContexts: OutputContext[] | RasaSlot,
   filterForIntent?: string,
   userText?: string,
-): Response[] {
+): Promise<Response[]> {
   const textResponses: Response[] = [];
 
   for (const response of responses) {
@@ -259,7 +264,32 @@ export function processResponses(
         )
 
       }
+      else if (response.action === "Email") {
+        if (!userText) {
+          throw new Error("Email needs userText")
+        }
+        const nc: NatsConnection = await connect({
+          servers: "nats_local:4222",
+          user: "web",
+          pass: "password"
+        });
+        const capturedEmail = await getEmailLLM(nc, "falcon7b", userText)
 
+        if (!capturedEmail) {
+          textResponses.push({
+            text: "What is your email address?"
+          })
+        } else {
+          textResponses.push({
+            text: "Can I confirm that your email address is " + transformEmailToSpeechText(capturedEmail)
+          })
+        }
+
+
+
+
+
+      }
       else {
         throw new Error("unhandled action " + response.action)
       }
@@ -552,13 +582,13 @@ export function validateIntentEntities(settings: CustomerSettings, session: Sess
   return [retResponses, session]
 }
 
-export function handleOverwriteSlots(
+export async function handleOverwriteSlots(
   settings: CustomerSettings,
   session: Session,
   intent: Intent,
   detEnts: RasaDetectedEntity[],
   eventId: string
-): null | [Response[], Session] {
+): Promise<null | [Response[], Session]> {
   let mergedEntities = mergeRepeatedEntities(detEnts)
   mergedEntities = sortRasaEntities(mergedEntities, intent)
   console.log("mergedEntities", mergedEntities)
@@ -593,7 +623,7 @@ export function handleOverwriteSlots(
             intent: intent.id,
             action: session.Entities.activeIntent
           })
-          return [processResponses(
+          return [await processResponses(
             settings,
             session,
             [matchedEntityFill.overwriteSlot.response],
@@ -612,7 +642,7 @@ export function handleOverwriteSlots(
   }
   return null
 }
-export function processIntent(settings: CustomerSettings, session: Session, intent: Intent, NLUContexts: OutputContext[] | RasaSlot | RasaResponse, eventId: string): [Response[], Session] {
+export async function processIntent(settings: CustomerSettings, session: Session, intent: Intent, NLUContexts: OutputContext[] | RasaSlot | RasaResponse, eventId: string): Promise<[Response[], Session]> {
   if (!isValidIntent(intent)) {
     throw new Error("invalid intent")
   }
@@ -652,7 +682,7 @@ export function processIntent(settings: CustomerSettings, session: Session, inte
     }
 
 
-    const overwriteRes = handleOverwriteSlots(settings, session, intent, NLUContexts.entities, eventId);
+    const overwriteRes = await handleOverwriteSlots(settings, session, intent, NLUContexts.entities, eventId);
     if (overwriteRes) {
       console.log("handleoverwriteslots responses", overwriteRes)
       return [overwriteRes[0], overwriteRes[1]]
@@ -687,7 +717,7 @@ export function processIntent(settings: CustomerSettings, session: Session, inte
           })
           console.log("requested slot setting", session.Entities.requested_slot)
           session.Entities.requested_slot = intent.id + "_" + entKey;
-          return [processResponses(settings, session, matchedEntityFill.responses, mySlots, intent.id), session]
+          return [await processResponses(settings, session, matchedEntityFill.responses, mySlots, intent.id), session]
         } else {
           session.Entities.requested_slot = null // @TODO not sure if this is the right place
         }
@@ -724,7 +754,7 @@ export function processIntent(settings: CustomerSettings, session: Session, inte
   console.log("responsesToUse", responsesToUse)
 
   console.log("NLUContexts,mappedIntentEnts", NLUContexts, mappedIntentEnts, session)
-  const responses = processResponses(settings, session, responsesToUse, Object.assign({}, NLUContexts, mappedIntentEnts))
+  const responses = await processResponses(settings, session, responsesToUse, Object.assign({}, NLUContexts, mappedIntentEnts))
   console.log("processed responses", responses)
   console.log("session before process session", session)
   session = processSessionWithResponses(settings, session, responses, NLUContexts)
@@ -758,7 +788,7 @@ export function processIntent(settings: CustomerSettings, session: Session, inte
       //   text: `<break time='1s'/>`
       // })
       responses.push(
-        ...processResponses(settings, session, matchedEntityFill.responses, mySlots, joiningIntent)
+        ...(await processResponses(settings, session, matchedEntityFill.responses, mySlots, joiningIntent))
       )
     }
   }
@@ -1836,3 +1866,4 @@ export async function getBestTranscript(customer: CustomerSettings, slots: RasaS
 export function sleep(ms: number) {
   new Promise(resolve => setTimeout(resolve, ms))
 }
+

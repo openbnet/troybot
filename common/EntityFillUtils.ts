@@ -5,7 +5,7 @@ import { decodeValue, getJmesPathActionData, isSubset, renderString } from "./Ut
 
 
 /// @dev used in rasa config generation
-export function getValueFromEntityFill(settings: CustomerSettings, key: string,numValue: 1,intentId: string): any[] {
+export function getValueFromEntityFill(settings: CustomerSettings, key: string, numValue: 1, intentId: string): any[] {
     settings = Object.assign(settings, getStandardObjects(settings))
     const [matchedIntent] = settings.Intents.filter((i) => {
         return i.id === intentId
@@ -34,8 +34,8 @@ export function getValueFromEntityFill(settings: CustomerSettings, key: string,n
     })
 
     if (matchedValidations.length !== 1) {
-        console.error("matchedValidations",matchedValidations)
-        console.error("intentId",intentId,key)
+        console.error("matchedValidations", matchedValidations)
+        console.error("intentId", intentId, key)
         throw new Error("has more then 1 matchedValidations " + key)
     }
     const matchedValidation = matchedValidations[0]
@@ -51,10 +51,10 @@ export function getValueFromEntityFill(settings: CustomerSettings, key: string,n
         if (!matchedObjKey) {
             throw new Error("cant get matchedObjKey " + req)
         }
-        (settings as any)[req] = getStandardObjectValues(settings,matchedObjKey, numValue)[0]
+        (settings as any)[req] = getStandardObjectValues(settings, matchedObjKey, numValue)[0]
     }
     const mappedList = getJmesPathActionData(
-        renderString(matchedValidation.jmesPath,settings),
+        renderString(matchedValidation.jmesPath, settings),
         settings
     )
     return getValuesFromEntitySynonym(mappedList.slice(0, numValue))
@@ -64,28 +64,28 @@ export function findFirstUnfilledParam(params: google.protobuf.IStruct, entityFi
     const filled: string[] = [];
     const unfilled: string[] = [];
     if (!params.fields) {
-      throw new Error("param no fields");
+        throw new Error("param no fields");
     }
     for (const key of Object.keys(params.fields)) {
-      const value = params.fields[key];
-      if (!value) {
-        throw new Error("cant get value" + key);
-      }
-      const decodedValue = decodeValue(value);
-      if (!decodedValue) {
-        unfilled.push(key);
-      } else {
-        filled.push(key);
-      }
+        const value = params.fields[key];
+        if (!value) {
+            throw new Error("cant get value" + key);
+        }
+        const decodedValue = decodeValue(value);
+        if (!decodedValue) {
+            unfilled.push(key);
+        } else {
+            filled.push(key);
+        }
     }
     for (const unfill of unfilled) {
-      const matchedEntity = entityFills.find((entityFill) => entityFill.name === unfill);
-      if (!matchedEntity) {
-        throw new Error(`Can't find entity fill for "${unfill}"`);
-      }
-      if (isSubset(matchedEntity.required, filled)) {
-        return unfill;
-      }
+        const matchedEntity = entityFills.find((entityFill) => entityFill.name === unfill);
+        if (!matchedEntity) {
+            throw new Error(`Can't find entity fill for "${unfill}"`);
+        }
+        if (isSubset(matchedEntity.required, filled)) {
+            return unfill;
+        }
     }
     return undefined;
 }

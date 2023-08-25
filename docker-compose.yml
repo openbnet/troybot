@@ -90,6 +90,8 @@ services:
   #     dockerfile: Dockerfile
 
   tts-tortise:
+    restart: always
+    shm_size: '2gb'
     environment:
       - CUDA_LAUNCH_BLOCKING=1
       - PYTORCH_CUDA_ALLOC_CONF=backend:native
@@ -98,7 +100,6 @@ services:
       dockerfile: Dockerfile
     volumes:
       - /data/voice:/data/voice
-      # - /data/ai-voice-cloning:/data/ai-voice-cloning
       - ~/.cache:/root/.cache/
       - ~/.ssh:/root/.ssh
       - ./services/ai-voice-cloning:/home/user/ai-voice-cloning
@@ -114,6 +115,8 @@ services:
 
 
   rvc:
+    restart: always
+    shm_size: '2gb'
     environment:
       - CUDA_LAUNCH_BLOCKING=1
       - PYTORCH_CUDA_ALLOC_CONF=backend:native
@@ -137,6 +140,43 @@ services:
               count: 1
               capabilities: [ gpu ]
 
+  falcon7b:
+    environment:
+      - CUDA_LAUNCH_BLOCKING=1
+      - NATS_USER=falcon7b
+      - NATS_PASS=password
+    build:
+      context: ./services/falcon7b
+      dockerfile: Dockerfile
+    volumes:
+      - ~/.cache:/home/user/.cache/
+      - ~/.ssh:/home/user/.ssh
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
 
+
+  # platypus2:
+  #   environment:
+  #     - CUDA_LAUNCH_BLOCKING=1
+  #     - NATS_USER=platypus2
+  #     - NATS_PASS=password
+  #   build:
+  #     context: ./services/platypus2
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ~/.cache:/home/user/.cache/
+  #     - ~/.ssh:/home/user/.ssh
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: 1
+  #             capabilities: [ gpu ]
 volumes:
   nats_data1:

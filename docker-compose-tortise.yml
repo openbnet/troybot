@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+
+  tts-tortise:
+    environment:
+      - CUDA_LAUNCH_BLOCKING=1
+      - PYTORCH_CUDA_ALLOC_CONF=backend:native
+    build:
+      context: ./services/ai-voice-cloning
+      dockerfile: Dockerfile
+    volumes:
+      - /data/voice:/data/voice
+      # - /data/ai-voice-cloning:/data/ai-voice-cloning
+      - ~/.cache:/root/.cache/
+      - ~/.ssh:/root/.ssh
+      - ./services/ai-voice-cloning:/home/user/ai-voice-cloning
+    ports:
+      - "7680:7680"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+
+
+
+volumes:
+  nats_data1:

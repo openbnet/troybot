@@ -77,7 +77,7 @@ async function getTortiseTTS(msg: string) {
                     "\n", // Line delimiter
                     "Custom", // Emotion
                     "", // Custom emotion (empty for now)
-                    "ruru", // Voice
+                    "rachel", // Voice
                     null, // Microphone source (not used)
                     0, // Voice chunks
                     1, // Candidates

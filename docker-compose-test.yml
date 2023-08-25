@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+
+  llongorca:
+    image: registry.hf.space/open-orca-llongorca-13b-16k:latest
+    environment:
+      - CUDA_LAUNCH_BLOCKING=1
+      - NATS_USER=falcon7b
+      - NATS_PASS=password
+    build:
+      context: ./services/llongOrca13b
+      dockerfile: Dockerfile
+    volumes:
+      - ~/.cache:/home/user/.cache/
+      - ~/.ssh:/home/user/.ssh
+    command: python app.py
+
+
+volumes:
+  nats_data1:

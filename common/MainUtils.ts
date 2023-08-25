@@ -206,7 +206,7 @@ export async function processMsg(
           });
           console.log("deny before res", session);
           return [
-            processResponses(
+            await processResponses(
               customer,
               session,
               matchedEntityFill.responses,
@@ -554,7 +554,7 @@ export async function processIntent(
   detectedEnts = sortRasaEntities(detectedEnts, intent);
   let responses: Response[] = [];
 
-  const overwriteRes = handleOverwriteSlots(
+  const overwriteRes = await handleOverwriteSlots(
     customer,
     session,
     intent,
@@ -594,7 +594,7 @@ export async function processIntent(
   }
   console.log("after validate", session);
   // slot filling
-  [responses, session] = getSlotFilling(customer, session, intent, eventId);
+  [responses, session] = await getSlotFilling(customer, session, intent, eventId);
   if (responses.length !== 0) {
     events.push({
       ...session.tracker[session.tracker.length - 1],
@@ -623,7 +623,7 @@ export async function processIntent(
   );
   session = getMappedParams(customer, session, responsesToUse);
   console.log("session after getmapped", JSON.stringify(session, null, 4));
-  const processedResponses = processResponses(
+  const processedResponses = await processResponses(
     customer,
     session,
     responsesToUse,
@@ -649,7 +649,7 @@ export async function processIntent(
   });
 
   // deal with if there is an outstanding context
-  const [interruptedRes, interruptedSession] = getInterruptedIntent(
+  const [interruptedRes, interruptedSession] = await getInterruptedIntent(
     customer,
     session,
     eventId
@@ -668,11 +668,11 @@ export async function processIntent(
   return [processedResponses, session, events];
 }
 
-export function getInterruptedIntent(
+export async function getInterruptedIntent(
   customer: CustomerSettings,
   session: Session,
   eventId: string
-): [Response[], Session] {
+): Promise<[Response[], Session]> {
   console.log("getInterruptedIntent", session.tracker);
   const returnRes: Response[] = [];
   const reversedTracker = JSON.parse(JSON.stringify(session.tracker));
@@ -727,13 +727,13 @@ export function getInterruptedIntent(
     //   text: `<break time='1s'/>`
     // });
     returnRes.push(
-      ...processResponses(
+      ...(await processResponses(
         customer,
         session,
         matchedEntityFill.responses,
         mySlots,
         lastIntent
-      )
+      ))
     );
   } else {
     console.error("getInterruptedIntent needs to deal with", lastEvent);
@@ -786,12 +786,12 @@ export function isValidIntent(intent: Intent): boolean {
   );
 }
 
-export function getSlotFilling(
+export async function getSlotFilling(
   customer: CustomerSettings,
   session: Session,
   intent: Intent,
   eventId: string
-): [Response[], Session] {
+): Promise<[Response[], Session]> {
   if (intent.entities) {
     for (const ent of intent.entities) {
       const entKey = ent.split("@")[0];
@@ -818,7 +818,7 @@ export function getSlotFilling(
           action: "ask_" + session.Entities.requested_slot
         });
         return [
-          processResponses(
+          await processResponses(
             customer,
             session,
             matchedEntityFill.responses,

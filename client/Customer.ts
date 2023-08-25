@@ -250,7 +250,7 @@ export const Customer: CustomerSettings = {
                     actionResponse: "and ${actionOutput} bathrooms in the unit.",
                 },
                 {
-                    text: "The master room and junior maste room each has an ensuite toilet, while the jack and jill room has a shared toilet. For the guest there is also a powder room so you maintain the privacy of your family while you entertain your guests. Let me whatsapp you the floor plan so you can visualize the place."
+                    text: "The master room and junior master room each has an ensuite toilet, while the jack and jill room has a shared toilet. For the guest there is also a powder room so you maintain the privacy of your family while you entertain your guests. Let me whatsapp you the floor plan so you can visualize the place."
                 }
             ]
         },
@@ -335,7 +335,7 @@ export const Customer: CustomerSettings = {
             ],
             responses: [
                 {
-                    text: "The master room can fit a  king size bed, it has built in dresser, walk in wardrobe and an ensuite toilet. The toilet has an embedded bath tub, stand in shower and a husband wife sink.",
+                    text: "The master room can fit a king size bed, it has built in dresser, walk in wardrobe and an ensuite toilet. The toilet has an embedded bath tub, stand in shower and a husband wife sink.",
                 },
             ]
         },
@@ -390,7 +390,22 @@ export const Customer: CustomerSettings = {
                     text: "sorry im unable to answer your question ${userText}, once i find the answer i'll get back to you.",
                 }
             ]
-        }
+        },
+        {
+            id: "email",
+            utterances: [
+                "can you send me an email",
+                "my email is johndee69@gmail.com , email me the details"
+            ],
+            entities: ["EmailAddress@EmailAddress"],
+            responses: [
+                {
+                    text: "got your email ${email}",
+                    action: "Email",
+                    actionResponse: "Unused"
+                }
+            ]
+        },
     ],
     UnknownIntentFallback: {
         id: "UnknownIntentFallback",
@@ -419,6 +434,19 @@ export const Customer: CustomerSettings = {
             responses: [
                 {
                     text: "Did you want to know about the unit or project?"
+                },
+            ] // handles no entity slot in
+        },
+        {
+            name: "EmailAddress",
+            mappedTo: "EmailAddress",
+            type: "text",
+            required: [],
+            validation: [
+            ],
+            responses: [
+                {
+                    text: "What is your email address?"
                 },
             ] // handles no entity slot in
         },
