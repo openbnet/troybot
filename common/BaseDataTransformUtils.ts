@@ -2,6 +2,7 @@ import { CustomerSettings, EntityInstance, EntitySynonymType, SalesItem, Respons
 import * as Combinatorics from 'js-combinatorics'
 import { SysNumber } from "./sys.number";
 import { AlchoholTypes } from "./Alchohol";
+import { EmailAddressSpoken } from "./EmailAddressSpoken";
 import { RealEstateTypes } from "./RealEstateTypes"
 import { Affirm } from "./Affirm";
 import { Deny } from "./Deny";
@@ -98,7 +99,8 @@ export function getStandardObjects(settings: CustomerSettings): { [key: string]:
       AlchoholTypes,
       RealEstateTypes,
       SysNumber: SysNumber,
-      Polite
+      Polite,
+      EmailAddressSpoken
       // Affirm,
       // Deny
     }
@@ -110,6 +112,7 @@ export function getStandardObjects(settings: CustomerSettings): { [key: string]:
       RealEstateTypes,
       SysNumber: SysNumber,
       Polite: Polite,
+      EmailAddressSpoken
       // Affirm,
       // Deny
     }

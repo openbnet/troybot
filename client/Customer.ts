@@ -392,12 +392,13 @@ export const Customer: CustomerSettings = {
             ]
         },
         {
-            id: "email",
+            id: "Email",
             utterances: [
                 "can you send me an email",
-                "my email is ${EmailAddressSpoken} , email me the details"
+                "my email is $[EmailAddressSpoken] , email me the details ${Polite}"
             ],
             s_entities: ["EmailAddressSpoken@EmailAddressSpoken"],
+            noFills: ["Polite@Polite"],
             responses: [
                 {
                     text: "got your email ${EmailAddressSpoken}",

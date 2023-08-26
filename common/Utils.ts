@@ -1356,6 +1356,12 @@ export function extractQueryItems(input: string): string[] | null {
   const queryItems = Array.from(matches, match => match[1]);
   return queryItems.length ? queryItems : null;
 }
+export function extractSpecialQueryItems(input: string): string[] | null {
+  const regex = /\$\[(.+?)\]/g;
+  const matches = input.matchAll(regex);
+  const queryItems = Array.from(matches, match => match[1]);
+  return queryItems.length ? queryItems : null;
+}
 
 
 /// @dev base function to get extractQueryItems array from responses
@@ -1423,6 +1429,25 @@ export function getEntityMatches(queryItems: string[], intent: Intent): string[]
   return ret;
 }
 
+export function getSpecialEntityMatches(queryItems: string[], intent: Intent): string[] {
+  const ret: string[] = [];
+  let entities: string[] = []
+  if (intent.s_entities) {
+    entities = entities.concat(intent.s_entities)
+  }
+  for (const queryItem of queryItems) {
+    const [matchedEntityString] = entities.filter((entity) => {
+      return entity.startsWith(queryItem)
+    })
+    if (matchedEntityString) {
+      ret.push(matchedEntityString.split("@")[1])
+    } else {
+      throw new Error("invalid entitiy " + queryItem)
+    }
+
+  }
+  return ret;
+}
 /// @dev getIntent wrapper for different nlu
 export async function getIntent(customer: CustomerSettings, query: string, session: Session): Promise<RasaResponse | null> {
   if (customer.nlu === "es") {

@@ -2,7 +2,7 @@ import fs from 'fs';
 import { CustomerSettings, Intent, RasaRule } from "./types"
 import YAML from 'js-yaml';
 import _ from "lodash";
-import { toLowerCaseObj, extractQueryItems, getEntityMatches, getStateMods, isSubset, isValidIntent, getAllResponsesFromIntent, shouldResetContexts, isPrimitiveIntent, isNoContextSwitchIntent } from './Utils';
+import { toLowerCaseObj, extractQueryItems, getEntityMatches, getStateMods, isSubset, isValidIntent, getAllResponsesFromIntent, shouldResetContexts, isPrimitiveIntent, isNoContextSwitchIntent, extractSpecialQueryItems, getSpecialEntityMatches } from './Utils';
 import { RasaOptions, rasaParseMessage, rasaPredict, RasaPredictInput, RasaResponse } from './rasa';
 import { getValueFromEntityFill, isValidFillCase } from './EntityFillUtils';
 import { getStandardObjects, getCombinations, getStandardObjectValues, getRasaDomainLookup } from './BaseDataTransformUtils';
@@ -431,12 +431,9 @@ function buildIntentUtterances(settings: CustomerSettings, intent: Intent): stri
       utt.push(utterance)
       continue;
     }
-    console.log("queryItems", queryItems)
     let entityNames: string[] = [];
     if (!isValidIntent) throw new Error("invalid intent")
     entityNames = getEntityMatches(queryItems, intent)
-
-    console.log("entityNames", entityNames, intent.id)
     if (!isSubset(entityNames, Object.keys(StaticData))) {
       console.error("entityNames not subset of StaticData", entityNames, Object.keys(StaticData))
       throw new Error("entityNames not subset of StaticData")
@@ -448,6 +445,7 @@ function buildIntentUtterances(settings: CustomerSettings, intent: Intent): stri
     const esStaticData = getStandardObjects(forcedSettings);
 
     const combinations = getCombinations(entityNames, queryItems, esStaticData);
+    console.log("combinations", combinations)
     // handle nomatch
     for (const combination of combinations) {
       const uttInstance = utterance
@@ -455,7 +453,44 @@ function buildIntentUtterances(settings: CustomerSettings, intent: Intent): stri
       utt.push(formatUtteranceString(uttInstance, combination, intent))
     }
   }
-  return utt;
+  return processSpecialEntitiesOnUtterances(settings, intent, utt);
+}
+
+
+function processSpecialEntitiesOnUtterances(settings: CustomerSettings, intent: Intent, utterances: string[]): string[] {
+  let returnUtt: string[] = [];
+  const StaticData = getStandardObjects(settings);
+  for (const utt of utterances) {
+    const queryItems = extractSpecialQueryItems(utt)
+    if (!queryItems) {
+      returnUtt.push(utt)
+      continue;
+    }
+    console.log("special got queryItem", queryItems)
+    let entityNames: string[] = [];
+    if (!isValidIntent) throw new Error("invalid intent")
+    entityNames = getSpecialEntityMatches(queryItems, intent)
+    if (!isSubset(entityNames, Object.keys(StaticData))) {
+      console.error("entityNames not subset of StaticData", entityNames, Object.keys(StaticData))
+      throw new Error("entityNames not subset of StaticData")
+    }
+    console.log("special entityNames", entityNames)
+    // @TODO gota refactor somewhere, hack for now
+    const forcedSettings = JSON.parse(JSON.stringify(settings))
+    forcedSettings.nlu = "es";
+    const esStaticData = getStandardObjects(forcedSettings);
+
+    const combinations = getCombinations(entityNames, queryItems, esStaticData);
+    console.log("combinations", combinations)
+    // handle nomatch
+    for (const combination of combinations) {
+      const uttInstance = utt
+      // handle the data injects sequantially in order
+      returnUtt.push(formatSpecialUtteranceString(uttInstance, combination, intent))
+    }
+  }
+  return returnUtt
+
 }
 
 function intentsToNluDomain(settings: CustomerSettings, intents: Intent[]): string {
@@ -1388,6 +1423,21 @@ function formatUtteranceString(utterance: string, entityValues: { [entityName: s
     }
     else if (noFillEnts.includes(entityName)) {
       return entityValue ? `[${entityValue}](${entityName})` : '';
+    }
+    else throw new Error("unmatched ent " + entityName)
+  });
+
+}
+
+function formatSpecialUtteranceString(utterance: string, entityValues: { [entityName: string]: string }, intent: Intent): string {
+  const entityRegex = /\$\[(\w+)\]/g;
+  const intEnts = intent.s_entities ? intent.s_entities.map((ent) => {
+    return ent.split("@")[0]
+  }) : []
+  return utterance.replace(entityRegex, (_, entityName) => {
+    const entityValue = entityValues[entityName];
+    if (intEnts.includes(entityName)) {
+      return entityValue ? entityValue : '';
     }
     else throw new Error("unmatched ent " + entityName)
   });
