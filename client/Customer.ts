@@ -395,17 +395,18 @@ export const Customer: CustomerSettings = {
             id: "email",
             utterances: [
                 "can you send me an email",
-                "my email is johndee69@gmail.com , email me the details"
+                "my email is ${EmailAddressSpoken} , email me the details"
             ],
-            entities: ["EmailAddress@EmailAddress"],
+            s_entities: ["EmailAddressSpoken@EmailAddressSpoken"],
             responses: [
                 {
-                    text: "got your email ${email}",
+                    text: "got your email ${EmailAddressSpoken}",
                     action: "Email",
                     actionResponse: "Unused"
                 }
             ]
         },
+
     ],
     UnknownIntentFallback: {
         id: "UnknownIntentFallback",
@@ -437,19 +438,19 @@ export const Customer: CustomerSettings = {
                 },
             ] // handles no entity slot in
         },
-        {
-            name: "EmailAddress",
-            mappedTo: "EmailAddress",
-            type: "text",
-            required: [],
-            validation: [
-            ],
-            responses: [
-                {
-                    text: "What is your email address?"
-                },
-            ] // handles no entity slot in
-        },
+        // {
+        //     name: "EmailAddress",
+        //     mappedTo: "EmailAddress",
+        //     type: "text",
+        //     required: [],
+        //     validation: [
+        //     ],
+        //     responses: [
+        //         {
+        //             text: "What is your email address?"
+        //         },
+        //     ] // handles no entity slot in
+        // },
     ],
     Agent: {
         supportedLanguages: ["en", "en-au"],

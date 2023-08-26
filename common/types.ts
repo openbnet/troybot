@@ -186,8 +186,10 @@ export type Intent = {
   id: string;
   utterances?: string[];
   entities?: string[]; // this is for user input captured entites
+  s_entities?: string[]; // special entities that are not detected using normal entity extractors
   required_entities?: string[]; // this is for rasa rule conditions. only works for global entities and slots. intent local ents not supported yet
   noFills?: string[]; // we use this to not set the entity in rasa, but just to use our templating system to spit out permutations to the nlu
+
   inputContexts?: string[];
   // oneOf below
   if?: intentIf;

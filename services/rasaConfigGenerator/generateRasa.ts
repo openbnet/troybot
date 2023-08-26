@@ -13,8 +13,8 @@ function main() {
         throw new Error("os doesnt support process.getuid")
     }
     console.log("currentUserId", currentUserId)
-    // generateRasaConfig(rasaPath, Customer)
-    // shell.exec(`cp -R ./templates/rasa/* ${rasaPath}`)
+    generateRasaConfig(rasaPath, Customer)
+    shell.exec(`cp -R ./templates/rasa/* ${rasaPath}`)
     shell.exec(`sudo chown -R 1001:${currentUserId} ${basePath}`)
     shell.exec(`docker run -v ${rasaPath}:/app -v ${basePath}/models:/app/models rasa/rasa:3.6.6-full train --fixed-model-name ${Customer.id}-${Customer.version}`)
     shell.exec(`sudo chown -R ${currentUserId}:${currentUserId} ${basePath}`)
