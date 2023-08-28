@@ -26,6 +26,8 @@ import jsonLogic from "json-logic-js";
 import { TextToSpeechClient } from "@google-cloud/text-to-speech";
 import { mergeRepeatedEntities, sortRasaEntities } from "./RasaUtils";
 import { Db, DbStatsOptions, MongoClient } from "mongodb";
+import { getEmailLLM } from "./LLM";
+import { NatsConnection, connect } from "nats";
 
 export async function synthesizeSpeech(text: string) {
   const ttsClient = new TextToSpeechClient();
@@ -89,9 +91,42 @@ export async function processMsg(
   } else throw new Error("only rasa supported");
   if (!NLUIntent) throw new Error("no NLUIntent");
 
+
   let bestIntent: Intent;
   [bestIntent, NLUIntent] = getBestIntentRasa(customer, session, NLUIntent);
   console.log("got bestIntent", bestIntent.id, NLUIntent.intent);
+
+
+
+  // handle special ents
+
+  console.log("handle special ents", bestIntent, NLUIntent)
+  if (bestIntent.s_entities) {
+    for (const s_ent of bestIntent.s_entities) {
+      const baseEnt = s_ent.split("@")[1]
+
+      if (baseEnt !== "EmailAddressSpoken") {
+        throw new Error("special ents only support EmailAddressSpoken")
+      }
+      const nc: NatsConnection = await connect({
+        servers: "nats_local:4222",
+        user: "web",
+        pass: "password"
+      });
+      const detectedEmail = await getEmailLLM(nc, "falcon7b", txt)
+      if (detectedEmail) {
+        console.log("got detectedEmail", detectedEmail)
+        NLUIntent.entities.push({
+          entity: s_ent.split("@")[0],
+          start: 0,
+          end: txt.length,
+          confidence_entity: 1,
+          value: detectedEmail,
+          extractor: "LLM"
+        });
+      }
+    }
+  }
   // inject undetected ents for askRes
   if (
     NLUIntent.intent.name.startsWith("askRes_") &&
@@ -551,7 +586,9 @@ export async function processIntent(
 
   // validate slots
   let detectedEnts = mergeRepeatedEntities(NLUIntent.entities);
+
   detectedEnts = sortRasaEntities(detectedEnts, intent);
+
   let responses: Response[] = [];
 
   const overwriteRes = await handleOverwriteSlots(
@@ -581,6 +618,7 @@ export async function processIntent(
     detectedEnts,
     eventId
   );
+  console.log("session after validate", session)
   session.lastIntent = intent.id;
 
   if (responses.length !== 0) {

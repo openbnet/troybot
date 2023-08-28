@@ -15,7 +15,10 @@ import {
   processMsg // Add a sessionsSet to store the sessions
 } from "../common/MainUtils";
 
-
+type NLURequest = {
+  voice?: Float32Array;
+  text?: string;
+}
 async function getTortiseTTS(msg: string) {
   const url = "http://tts-tortise:7680";
   try {
@@ -103,18 +106,26 @@ async function main() {
         } as Session;
       }
       console.log("gona send to stt");
-      const sttRes = await nc.request("service.stt", m.data, {
-        timeout: 20000
-      });
-      const payload = sc.decode(sttRes.data);
+      const data = jc.decode(m.data) as NLURequest
+      let text = data.text
+      if (!text && !data.voice) {
+        throw new Error("require either text or voice in request")
+      }
+      if (!text) {
+        const sttRes = await nc.request("service.stt", m.data, {
+          timeout: 20000
+        });
+        text = sc.decode(sttRes.data);
+      }
+
       const [responses, session, logs] = await processMsg(
         Customer,
-        payload,
+        text,
         curr_session // Pass the session to processMsg
       );
       console.log("processMsg logs", logs);
       console.log("m", m.reply);
-      console.log("payload", payload);
+      console.log("payload", text);
       // Store the latest session in the set before returning the response
       kv.put(client_id, jc.encode(session));
 
@@ -128,7 +139,7 @@ async function main() {
         jc.encode({
           responses,
           session,
-          input_text: payload
+          input_text: text
         })
       );
       console.log("responded");

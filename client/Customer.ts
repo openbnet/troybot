@@ -401,9 +401,39 @@ export const Customer: CustomerSettings = {
             noFills: ["Polite@Polite"],
             responses: [
                 {
-                    text: "got your email ${EmailAddressSpoken}",
-                    action: "Email",
-                    actionResponse: "Unused"
+                    text: "can i confirm your email is ${EmailAddressSpoken}",
+                }
+            ],
+            childIntents: [
+                {
+                    id: "Email.No",
+                    utterances: [
+                        "no",
+                        "na",
+                        "nope",
+                    ],
+                    responses: [
+                        {
+                            text: "Can you please repeat your email address, spelling it out"
+                        }
+                    ]
+                },
+                {
+                    id: "Email.Yes",
+                    utterances: ["yes", "yea", "yes it is correct"],
+                    responses: [
+                        {
+                            text: "Cool, I have sent you the email."
+                        }
+                    ]
+                },
+                {
+                    id: "Email.fallback",
+                    responses: [
+                        {
+                            text: "#{RootContext}"
+                        }
+                    ]
                 }
             ]
         },
@@ -439,19 +469,17 @@ export const Customer: CustomerSettings = {
                 },
             ] // handles no entity slot in
         },
-        // {
-        //     name: "EmailAddress",
-        //     mappedTo: "EmailAddress",
-        //     type: "text",
-        //     required: [],
-        //     validation: [
-        //     ],
-        //     responses: [
-        //         {
-        //             text: "What is your email address?"
-        //         },
-        //     ] // handles no entity slot in
-        // },
+        {
+            name: "EmailAddressSpoken",
+            mappedTo: "EmailAddressSpoken",
+            type: "text",
+            required: [],
+            responses: [
+                {
+                    text: "What is your email address?"
+                },
+            ] // handles no entity slot in
+        },
     ],
     Agent: {
         supportedLanguages: ["en", "en-au"],

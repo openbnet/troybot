@@ -97,7 +97,10 @@ export default function App() {
 
   const natsRequestNLU = async (
     subj: string,
-    msg: Float32Array
+    msg: {
+      voice?: Float32Array,
+      text?: string
+    }
   ): Promise<NLUResponse> => {
     const nc = nats();
     if (!nc) throw Error("no nc");
@@ -149,7 +152,7 @@ export default function App() {
     }
     console.log("onSpeechEndCB", audio);
     const startTime = Date.now();
-    const nluRes = await natsRequestNLU("service.nlu", audio);
+    const nluRes = await natsRequestNLU("service.nlu", { voice: audio });
 
     const responseTime = (Date.now() - startTime) / 1000;
     console.log("nluRes", nluRes);

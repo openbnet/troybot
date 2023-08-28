@@ -114,31 +114,31 @@ services:
               capabilities: [ gpu ]
 
 
-  rvc:
-    restart: always
-    shm_size: '2gb'
-    environment:
-      - CUDA_LAUNCH_BLOCKING=1
-      - PYTORCH_CUDA_ALLOC_CONF=backend:native
-    build:
-      context: ./services/Retrieval-based-Voice-Conversion-WebUI
-      dockerfile: Dockerfile
-    volumes:
-      - /data/voice:/data/voice
-      - ~/.cache:/root/.cache/
-      - ~/.ssh:/root/.ssh
-      - ./services/Retrieval-based-Voice-Conversion-WebUI/weights:/app/weights
-      - ./services/Retrieval-based-Voice-Conversion-WebUI/opt:/app/opt
-      - ./services/Retrieval-based-Voice-Conversion-WebUI/logs:/app/logs
-    ports:
-      - "7865:7865"
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [ gpu ]
+  # rvc:
+  #   restart: always
+  #   shm_size: '2gb'
+  #   environment:
+  #     - CUDA_LAUNCH_BLOCKING=1
+  #     - PYTORCH_CUDA_ALLOC_CONF=backend:native
+  #   build:
+  #     context: ./services/Retrieval-based-Voice-Conversion-WebUI
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - /data/voice:/data/voice
+  #     - ~/.cache:/root/.cache/
+  #     - ~/.ssh:/root/.ssh
+  #     - ./services/Retrieval-based-Voice-Conversion-WebUI/weights:/app/weights
+  #     - ./services/Retrieval-based-Voice-Conversion-WebUI/opt:/app/opt
+  #     - ./services/Retrieval-based-Voice-Conversion-WebUI/logs:/app/logs
+  #   ports:
+  #     - "7865:7865"
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: 1
+  #             capabilities: [ gpu ]
 
   falcon7b:
     environment:

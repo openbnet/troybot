@@ -7,6 +7,7 @@ import {
 import fs from "fs";
 import http from "http"
 import { keccak256 } from "@ethersproject/keccak256";
+import { transformEmailsToCountry } from "../common/Email";
 
 const sc = StringCodec();
 const jc = JSONCodec();
@@ -23,7 +24,7 @@ async function main() {
     (async () => {
         for await (const m of sub) {
             console.log("m reply", m.reply);
-            const msg = sc.decode(m.data)
+            const msg = transformEmailsToCountry(sc.decode(m.data))
             console.log("msg", msg)
             const cachedFilePath = getCachedFilePath(msg);
             console.log("cachedFilePath", cachedFilePath)
@@ -82,7 +83,7 @@ async function getTortiseTTS(msg: string) {
                     0, // Voice chunks
                     1, // Candidates
                     0, // Seed
-                    16, // Samples
+                    2, // Samples
                     100, // Iterations
                     0.9, // Temperature
                     "P", // Diffusion Samplers

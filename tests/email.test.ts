@@ -1,3 +1,4 @@
+import { transformEmailsToCountry } from "../common/Email";
 import { getEmailLLM } from "../common/LLM"
 import {
     connect,
@@ -67,4 +68,21 @@ describe("text to email", () => {
         console.log("res", res)
         expect(res).toBe(null)
     }, 30000)
+
+
+    it.only("should transform emails in text to country based", async () => {
+        const txt = "got your email hansel@openb.net"
+        const res = transformEmailsToCountry(txt)
+        expect(res).toBe("got your email Hong Kong\n America\n Norway\n Singapore\n England\n London\n at Osaka\n Paris\n England\n Norway\n Britain\n dot net")
+    })
+    it.only("transform should work with dashes and 2 tier tlds", async () => {
+        const txt = "got your email i-am-stupid@blah.co.uk"
+        const res = transformEmailsToCountry(txt)
+        expect(res).toBe("got your email India\n dash America\n Malaysia\n dash Singapore\n Thailand\n Uganda\n Paris\n India\n Denmark\n at Britain\n London\n America\n Hong Kong\n dot China\n Osaka\n dot uk")
+    })
+    it.only("should not transform non emails", async () => {
+        const txt = "got your email"
+        const res = transformEmailsToCountry(txt)
+        expect(res).toBe("got your email")
+    })
 })

@@ -11,7 +11,6 @@ import { sendMessageTelegram } from "./Telegram";
 import FuzzySet from "fuzzyset.js";
 import { sortRasaEntities, mergeRepeatedEntities } from "./RasaUtils";
 import { getEmailLLM } from "./LLM"
-import { transformEmailToSpeechText } from "./Email"
 import {
   connect,
   NatsConnection,
@@ -264,36 +263,11 @@ export async function processResponses(
         )
 
       }
-      else if (response.action === "Email") {
-        if (!userText) {
-          throw new Error("Email needs userText")
-        }
-        const nc: NatsConnection = await connect({
-          servers: "nats_local:4222",
-          user: "web",
-          pass: "password"
-        });
-        const capturedEmail = await getEmailLLM(nc, "falcon7b", userText)
-
-        if (!capturedEmail) {
-          textResponses.push({
-            text: "What is your email address?"
-          })
-        } else {
-          textResponses.push({
-            text: "Can I confirm that your email address is " + transformEmailToSpeechText(capturedEmail)
-          })
-        }
-
-
-
-
-
-      }
       else {
         throw new Error("unhandled action " + response.action)
       }
-    } else {
+    }
+    else {
       textResponses.push({
         text: renderString(response.text, resSettings),
         affectedContexts: response.affectedContexts,
@@ -420,7 +394,7 @@ export function validateIntentEntities(settings: CustomerSettings, session: Sess
       }
       throw new Error("cant get matchedEntityFill for " + detectedEnt.entity)
     }
-    // console.log("matchedEntityFill",matchedEntityFill.name,session)
+    console.log("matchedEntityFill", matchedEntityFill.name, session)
     if (matchedEntityFill.validation) {
       // validate only if mapping is defined
       for (const validation of matchedEntityFill.validation) {
@@ -575,7 +549,8 @@ export function validateIntentEntities(settings: CustomerSettings, session: Sess
 
       }
     } else {
-      throw new Error("need to fill for no validation")
+      console.log("no validate", session, retResponses, matchedEntityFill, detectedEnt)
+      session.Entities[detectedEnt.entity] = detectedEnt.value
     }
 
   }
